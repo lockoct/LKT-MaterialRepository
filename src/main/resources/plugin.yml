@@ -1,0 +1,10 @@
+name: LKT-MaterialRepository
+version: '${project.version}'
+main: com.github.lockoct.Main
+api-version: 1.19
+authors: [lockoct]
+depend: [LKT-Core]
+commands:
+  materialrepository:
+    description: LKT物料仓库插件使用命令
+    aliases: [mr]
