@@ -2,6 +2,7 @@ package com.github.lockoct.menu;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
+import com.github.lockoct.item.listener.KeyboardMenuListener;
 import com.github.lockoct.utils.DatabaseUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ public class ItemListMenu extends BaseMenu{
     private int currentPage;
     private int totalPage;
     private int total;
+    private List<Item> items;
 
     public ItemListMenu(String title, Player player) {
         super(54, title, player, Main.plugin);
@@ -27,10 +29,6 @@ public class ItemListMenu extends BaseMenu{
 
     public int getCurrentPage() {
         return currentPage;
-    }
-
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
     }
 
     public void setItems() {
@@ -44,7 +42,7 @@ public class ItemListMenu extends BaseMenu{
                 @Override
                 public void run() {
                     Pager pager = dao.createPager(page, PAGE_SIZE);
-                    List<Item> items = dao.query(Item.class, null, pager);
+                    items = dao.query(Item.class, null, pager);
                     pager.setRecordCount(dao.count(Item.class));
                     currentPage = page;
                     totalPage = pager.getPageCount();
@@ -84,7 +82,6 @@ public class ItemListMenu extends BaseMenu{
         Inventory inv = this.getInventory();
 
         // 上一页
-        inv.setItem(PAGE_SIZE, null);
         if (this.currentPage > 1) {
             this.setOptItem(Material.ARROW, "上一页：第" + (this.currentPage - 1) + "页", PAGE_SIZE, "prePage");
         } else {
@@ -99,15 +96,22 @@ public class ItemListMenu extends BaseMenu{
         }
 
         // 分页信息
-        ItemStack is = new ItemStack(Material.BOOK);
+        ItemStack is = this.setOptItem(Material.BOOK, "当前 " + this.currentPage + " / " + this.totalPage + " 页", 49, "pageInfo");
         ItemMeta im = is.getItemMeta();
         assert im != null;
-        im.setDisplayName("当前 " + this.currentPage + " / " + this.totalPage + " 页");
         // 分页附加信息
         ArrayList<String> loreList = new ArrayList<>();
         loreList.add("共 " + this.total + " 类物品");
         im.setLore(loreList);
         is.setItemMeta(im);
         inv.setItem(49, is);
+    }
+
+    public void toKeyboardMenu(int index) {
+        if (index < PAGE_SIZE) {
+            KeyboardMenu menu = new KeyboardMenu("数量选择", items.get(index), this.currentPage, this.getPlayer());
+            this.close();
+            menu.open(new KeyboardMenuListener(menu));
+        }
     }
 }

@@ -25,6 +25,8 @@ public class ItemListMenuListener extends BaseMenuListener {
                     case "exit" -> menu.close();
                     case "nextPage" -> menu.setItems(menu.getCurrentPage() + 1);
                     case "prePage" -> menu.setItems(menu.getCurrentPage() - 1);
+                    case "pageInfo" -> {}
+                    default -> menu.toKeyboardMenu(e.getRawSlot());
                 }
             }
             return true;

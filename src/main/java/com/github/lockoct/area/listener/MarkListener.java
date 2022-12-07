@@ -19,7 +19,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.HashMap;
 
 public class MarkListener implements Listener {
-    private static HashMap<Integer, MarkData> markModePlayers;
+    private static HashMap<Integer, MarkData> markModePlayers = new HashMap<>();
 
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
