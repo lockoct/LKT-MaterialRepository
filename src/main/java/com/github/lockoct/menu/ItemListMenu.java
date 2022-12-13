@@ -2,6 +2,7 @@ package com.github.lockoct.menu;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
+import com.github.lockoct.entity.MenuContext;
 import com.github.lockoct.item.listener.KeyboardMenuListener;
 import com.github.lockoct.utils.DatabaseUtil;
 import org.bukkit.Material;
@@ -109,7 +110,10 @@ public class ItemListMenu extends BaseMenu{
 
     public void toKeyboardMenu(int index) {
         if (index < PAGE_SIZE) {
-            KeyboardMenu menu = new KeyboardMenu("数量选择", items.get(index), this.currentPage, this.getPlayer());
+            MenuContext context = new MenuContext();
+            context.setItemInfo(items.get(index));
+            context.setFromPage(this.currentPage);
+            KeyboardMenu menu = new KeyboardMenu("数量选择", this.getPlayer(), context);
             this.close();
             menu.open(new KeyboardMenuListener(menu));
         }

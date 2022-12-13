@@ -1,11 +1,10 @@
 package com.github.lockoct.menu;
 
 import com.github.lockoct.Main;
-import com.github.lockoct.entity.Item;
+import com.github.lockoct.entity.MenuContext;
 import com.github.lockoct.item.listener.ItemListMenuListener;
 import com.github.lockoct.item.listener.ShulkerBoxPlaceMenuListener;
-import com.github.lockoct.utils.DatabaseUtil;
-import org.bukkit.ChatColor;
+import com.github.lockoct.item.task.SendItemTask;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Light;
@@ -16,25 +15,18 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockDataMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.nutz.dao.Cnd;
-import org.nutz.dao.Dao;
-
-import java.util.ArrayList;
 
 public class KeyboardMenu extends BaseMenu {
     private final String CALC_RESULT_PREFIX = "拿取物品的数量为：";
     private final int[] numKeyPos = new int[]{38, 10, 11, 12, 19, 20, 21, 28, 29, 30};
     private final int[] modePos = new int[]{14, 15, 16};
-    private final Item itemInfo;
-    private final int fromPage;
+    private final MenuContext context;
     private int mode = 1;
     private int calcResult = 0;
 
-    public KeyboardMenu(String title, Item item, int fromPage, Player player) {
+    public KeyboardMenu(String title, Player player, MenuContext context) {
         super(54, title, player, Main.plugin);
-        this.itemInfo = item;
-        this.fromPage = fromPage;
+        this.context = context;
         this.setKeyboard();
         this.setModeItem();
         this.setOptItem(Material.ARROW, "返回", 48, "back");
@@ -136,13 +128,13 @@ public class KeyboardMenu extends BaseMenu {
 
     public void setCalcResult(int calcResult) {
         // 库存单位换算
-        int amount = itemInfo.getAmount();
-        Material material = Material.getMaterial(itemInfo.getType());
+        int amount = this.context.getItemInfo().getAmount();
+        Material material = Material.getMaterial(this.context.getItemInfo().getType());
         assert material != null;
         int maxStackSize = material.getMaxStackSize();
         switch (this.mode) {
             case 2 -> amount = amount / maxStackSize;
-            case 3 -> amount = amount / (maxStackSize * 27);
+            case 3 -> amount = Math.min(amount / (maxStackSize * 27), 45); // 按盒获取最多只能装45盒
         }
         this.calcResult = Math.min(calcResult, amount);
 
@@ -169,92 +161,18 @@ public class KeyboardMenu extends BaseMenu {
     public void back() {
         ItemListMenu menu = new ItemListMenu("物料选择菜单", this.getPlayer());
         this.close();
-        menu.setItems(this.fromPage);
+        menu.setItems(this.context.getFromPage());
         menu.open(new ItemListMenuListener(menu));
     }
 
     public void confirm() {
         if (this.getCalcResult() > 0) {
             if (this.mode != 3) {
-                Dao dao = DatabaseUtil.getDao();
-                if (dao != null) {
-                    // 倍率
-                    Player player = this.getPlayer();
-                    final boolean moreThanRepoAmount;
-                    // 需要获取当前类型最大堆叠数，不能直接用64
-                    Material material = Material.getMaterial(itemInfo.getType());
-                    assert material != null;
-                    int maxStackSize = material.getMaxStackSize();
-                    int times = this.mode == 1 ? 1 : maxStackSize;
-                    int amount = this.getCalcResult() * times;
-                    Item item = dao.query(Item.class, Cnd.where("id", "=", this.itemInfo.getId())).get(0);
-                    if (item.getAmount() <= 0) {
-                        this.close();
-                        player.sendMessage(ChatColor.RED + "该物品暂无库存");
-                        return;
-                    }
-
-                    if (amount > item.getAmount()) {
-                        amount = item.getAmount();
-                        moreThanRepoAmount = true;
-                    } else {
-                        moreThanRepoAmount = false;
-                    }
-
-                    // 检查玩家背包空位
-                    ArrayList<Integer> emptySlotPos = new ArrayList<>();
-                    Inventory playerInv = player.getInventory();
-                    for (int i = 0; i < 36; i++) { // 36及其之后的位置都是装备栏
-                        if (playerInv.getItem(i) == null) {
-                            // 排除装备栏
-                            emptySlotPos.add(i);
-                        }
-                    }
-
-                    int needSlot = amount / maxStackSize; //需要的背包格子数量
-                    int groupCount = needSlot;
-                    int remain = amount % maxStackSize; // 剩余凑不成一组的
-                    if (remain > 0) {
-                        needSlot++;
-                    }
-
-                    if (needSlot > emptySlotPos.size()) {
-                        this.close();
-                        player.sendMessage(ChatColor.RED + "背包空余格子数量不足，请先清理背包后再领取物料");
-                        return;
-                    }
-
-                    item.setAmount(item.getAmount() - amount);
-                    final int finNeedSlot = needSlot;
-                    new BukkitRunnable(){
-                        @Override
-                        public void run() {
-                            int res = dao.update(item);
-                            if (res > 0) {
-                                // 给玩家背包发放物品
-                                for (int i = 0; i < finNeedSlot; i++) {
-                                    Material m = Material.getMaterial(item.getType());
-                                    assert m != null;
-                                    ItemStack sendItem = new ItemStack(m);
-                                    if (i + 1 <= groupCount) {
-                                        sendItem.setAmount(m.getMaxStackSize());
-                                    } else {
-                                        sendItem.setAmount(remain);
-                                    }
-
-                                    playerInv.setItem(emptySlotPos.get(i), sendItem);
-                                }
-                                if (moreThanRepoAmount) {
-                                    player.sendMessage(ChatColor.YELLOW + "物料库存出现变化，实际领取数量将少于请求数量");
-                                }
-                                player.sendMessage(ChatColor.GREEN + "物料领取成功，共计" + groupCount + "组" + remain + "个物品");
-                            }
-                        }
-                    }.runTaskAsynchronously(Main.plugin);
-                    this.close();
-                }
+                new SendItemTask(this.getPlayer(), this.context.getItemInfo(), this.mode, this.getCalcResult()).runTaskAsynchronously(Main.plugin);
+                this.close();
             } else {
-                ShulkerBoxPlaceMenu menu = new ShulkerBoxPlaceMenu("请放置对应数量的潜影盒", this.getPlayer());
+                this.context.setBoxCount(this.calcResult);
+                ShulkerBoxPlaceMenu menu = new ShulkerBoxPlaceMenu("请放置对应数量的潜影盒", this.getPlayer(), this.context);
                 menu.open(new ShulkerBoxPlaceMenuListener(menu));
             }
         }

@@ -35,7 +35,7 @@ public final class Main extends JavaPlugin {
         Init.initTables();
 
         // 添加定时任务
-        CronJobUtil.setJob(AutoCollectJob.class, "collectItems", "materialRepository", "30 * 19 2 12 ?");
+        CronJobUtil.setJob(AutoCollectJob.class, "collectItems", "materialRepository", "30 * 22 7 12 ?");
 
         ColorLogUtil.logSuccess(this, "插件启动成功");
     }
