@@ -1,7 +1,8 @@
 package com.github.lockoct;
 
-import com.github.lockoct.command.BaseCommandExecutor;
+import com.github.lockoct.area.command.AreaCommand;
 import com.github.lockoct.area.command.MarkCommand;
+import com.github.lockoct.command.BaseCommandExecutor;
 import com.github.lockoct.item.command.ItemCommand;
 import com.github.lockoct.utils.ColorLogUtil;
 import org.bukkit.command.Command;
@@ -32,16 +33,10 @@ public class CommandRouter extends BaseCommandExecutor implements TabExecutor {
             if (args.length > 0) {
                 String[] subCmdArgs = Arrays.copyOfRange(args, 1, args.length);
                 switch (args[0]) {
-                    case "mark":
-                        MarkCommand.getInstance().execute(sender, subCmdArgs);
-                        break;
-                    case "item":
-                        ItemCommand.getInstance().execute(sender, subCmdArgs);
-                        break;
-                    case "area":
-                        break;
-                    default:
-                        doHelp(player, helpStrList);
+                    case "mark" -> MarkCommand.getInstance().execute(sender, subCmdArgs);
+                    case "item" -> ItemCommand.getInstance().execute(sender, subCmdArgs);
+                    case "area" -> AreaCommand.getInstance().execute(sender, subCmdArgs);
+                    default -> doHelp(player, helpStrList);
                 }
             } else {
                 doHelp(player, helpStrList);

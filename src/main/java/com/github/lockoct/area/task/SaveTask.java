@@ -30,15 +30,16 @@ public class SaveTask extends BukkitRunnable {
             tx.beginRC();
             CollectArea caTmp = tx.insertWith(ca, "chests");
             if (caTmp != null && !caTmp.getChests().isEmpty()) {
-                player.sendMessage(ChatColor.GREEN + "采集区域保存成功，已退出标记模式");
+                this.player.sendMessage(ChatColor.GREEN + "采集区域保存成功，已退出标记模式");
             }
+            tx.commit();
         } catch (Throwable e) {
             e.printStackTrace();
             tx.rollback();
-            player.sendMessage(ChatColor.RED + "采集区域保存失败，已退出标记模式");
+            this.player.sendMessage(ChatColor.RED + "采集区域保存失败，已退出标记模式");
         } finally {
             tx.close();
-            MarkListener.clearMarkData(player);
+            MarkListener.clearMarkData(this.player);
         }
     }
 }
