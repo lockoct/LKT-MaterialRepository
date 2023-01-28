@@ -46,8 +46,9 @@ public class AreaListMenu extends BaseMenu {
                 @Override
                 public void run() {
                     Pager pager = dao.createPager(page, PAGE_SIZE);
-                    areas = dao.query(CollectArea.class, Cnd.where("deleted", "=", 0).and("create_user", "=", getPlayer().getUniqueId().toString()), pager);
-                    pager.setRecordCount(dao.count(CollectArea.class));
+                    Cnd cond = Cnd.where("deleted", "=", 0).and("create_user", "=", getPlayer().getUniqueId().toString());
+                    areas = dao.query(CollectArea.class, cond.orderBy("create_time", "desc"), pager);
+                    pager.setRecordCount(dao.count(CollectArea.class, cond));
                     currentPage = page;
                     totalPage = pager.getPageCount();
                     total = pager.getRecordCount();

@@ -1,8 +1,8 @@
 package com.github.lockoct.area.listener;
 
 import com.github.lockoct.Main;
-import com.github.lockoct.entity.MarkData;
 import com.github.lockoct.area.task.CalcAreaTask;
+import com.github.lockoct.entity.MarkData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -74,7 +74,7 @@ public class MarkListener implements Listener {
     }
 
     // 清除玩家标记数据
-    public static void clearMarkData(Player player) {
+    public static boolean clearMarkData(Player player) {
         int key = player.hashCode();
         MarkData data = markModePlayers.get(key);
         if (data != null) {
@@ -84,6 +84,10 @@ public class MarkListener implements Listener {
                 Bukkit.getScheduler().cancelTask(taskId);
             }
             markModePlayers.remove(key);
+            return true;
+        } else {
+            player.sendMessage(ChatColor.RED + "未进入标记模式，请先使用 /mr mark start 进入标记模式标记采集区域");
+            return false;
         }
     }
 

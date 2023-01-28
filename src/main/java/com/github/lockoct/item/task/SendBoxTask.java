@@ -88,7 +88,7 @@ public class SendBoxTask extends BukkitRunnable {
             if (moreThanRepoAmount) {
                 player.sendMessage(ChatColor.YELLOW + "物料库存出现变化，实际领取数量将少于请求数量");
             }
-            player.sendMessage(ChatColor.GREEN + "物料领取成功，共计" + needBox + "箱物品");
+            player.sendMessage(ChatColor.GREEN + "物料领取成功，共计" + needBox + "盒物品");
         }
     }
 }

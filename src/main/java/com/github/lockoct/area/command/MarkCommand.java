@@ -1,12 +1,12 @@
 package com.github.lockoct.area.command;
 
 import com.github.lockoct.Main;
+import com.github.lockoct.area.listener.MarkListener;
+import com.github.lockoct.area.task.SaveTask;
 import com.github.lockoct.command.BaseCommand;
 import com.github.lockoct.entity.CollectArea;
 import com.github.lockoct.entity.CollectAreaChest;
 import com.github.lockoct.entity.MarkData;
-import com.github.lockoct.area.listener.MarkListener;
-import com.github.lockoct.area.task.SaveTask;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -14,15 +14,22 @@ import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MarkCommand extends BaseCommand {
     private static MarkCommand instance;
+    private static final List<String> subCommandList = new ArrayList<>(Arrays.asList("start", "cancel", "clear", "save"));
 
     public static MarkCommand getInstance() {
         if (instance == null) {
             instance = new MarkCommand();
         }
         return instance;
+    }
+
+    public static List<String> getSubCommandList() {
+        return new ArrayList<>(subCommandList);
     }
 
     @Override
@@ -42,13 +49,19 @@ public class MarkCommand extends BaseCommand {
                     data.setMarkStartTime(LocalDateTime.now());
                     MarkListener.getMarkModePlayers().put(key, data);
                 } case "cancel" -> {
-                    MarkListener.clearMarkData(player);
-                    player.sendMessage("已取消并退出标记模式");
+                    boolean res = MarkListener.clearMarkData(player);
+                    if (res) {
+                        player.sendMessage("已取消并退出标记模式");
+                    }
                 } case "clear" -> {
                     MarkData data = MarkListener.getMarkModePlayers().get(key);
-                    data.setMarkPoint1(null);
-                    data.setMarkPoint2(null);
-                    player.sendMessage("已清除选区");
+                    if (data != null) {
+                        data.setMarkPoint1(null);
+                        data.setMarkPoint2(null);
+                        player.sendMessage("已清除选区");
+                    } else {
+                        player.sendMessage(ChatColor.RED + "未进入标记模式，请先使用 /mr mark start 进入标记模式标记采集区域");
+                    }
                 } case "save" -> {
                     if (args.length != 2) {
                         markSaveHelp(player);

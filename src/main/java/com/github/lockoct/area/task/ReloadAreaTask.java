@@ -75,7 +75,11 @@ public class ReloadAreaTask extends BukkitRunnable {
                     }
                 }
             }
-            int res = tx.clear(CollectAreaChest.class, Cnd.where("area_id", "=", this.area.getId()).and("id", "NOT IN", existChestIdList));
+            Cnd cond = Cnd.where("area_id", "=", this.area.getId());
+            if (existChestIdList.size() > 0) {
+                cond.and("id", "NOT IN", existChestIdList);
+            }
+            int res = tx.clear(CollectAreaChest.class, cond);
             tx.commit();
 
             String msg = "采集区域更新完成";

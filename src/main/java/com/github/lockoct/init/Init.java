@@ -20,10 +20,14 @@ public class Init {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Daos.createTablesInPackage(dao, "com.github.lockoct.entity", false);
             // Arrays.stream(pkgNames).forEach(e -> {
             //     Daos.createTablesInPackage(dao, "com.github.lockoct" + e + "entity", false);
             // });
+
+            // 自动建表
+            Daos.createTablesInPackage(dao, "com.github.lockoct.entity", false);
+            // 自动迁移表结构
+            Daos.migration(dao, "com.github.lockoct.entity", true, false, false);
         }
     }
 }

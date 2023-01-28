@@ -29,7 +29,7 @@ public class SaveTask extends BukkitRunnable {
         try {
             tx.beginRC();
             CollectArea caTmp = tx.insertWith(ca, "chests");
-            if (caTmp != null && !caTmp.getChests().isEmpty()) {
+            if (caTmp != null) {
                 this.player.sendMessage(ChatColor.GREEN + "采集区域保存成功，已退出标记模式");
             }
             tx.commit();

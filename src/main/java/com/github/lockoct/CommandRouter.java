@@ -5,6 +5,7 @@ import com.github.lockoct.area.command.MarkCommand;
 import com.github.lockoct.command.BaseCommandExecutor;
 import com.github.lockoct.item.command.ItemCommand;
 import com.github.lockoct.utils.ColorLogUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -50,6 +51,23 @@ public class CommandRouter extends BaseCommandExecutor implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(@Nonnull CommandSender commandSender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
-        return null;
+        List<String> cmdList = null;
+        switch (args.length) {
+            case 1:
+                cmdList = new ArrayList<>(Arrays.asList("mark", "item", "area"));
+                if (StringUtils.isNotBlank(args[0])) {
+                    cmdList.removeIf(e -> !e.startsWith(args[0].toLowerCase()));
+                }
+                break;
+            case 2:
+                if ("mark".equals(args[0])) {
+                    cmdList = MarkCommand.getSubCommandList();
+                    if (StringUtils.isNotBlank(args[1])) {
+                        cmdList.removeIf(e -> !e.startsWith(args[1].toLowerCase()));
+                    }
+                }
+                break;
+        }
+        return cmdList;
     }
 }
