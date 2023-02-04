@@ -1,7 +1,7 @@
 package com.github.lockoct.area.task;
 
-import com.github.lockoct.entity.MarkData;
 import com.github.lockoct.area.listener.MarkListener;
+import com.github.lockoct.entity.MarkData;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,7 +22,7 @@ public class CalcAreaTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        int area = Math.max(Math.abs(this.point1.getBlockX() - this.point2.getBlockX()), 1) * Math.max(Math.abs(this.point1.getBlockY() - this.point2.getBlockY()), 1) * Math.max(Math.abs(this.point1.getBlockZ() - this.point2.getBlockZ()), 1);
+        int area = (Math.abs(this.point1.getBlockX() - this.point2.getBlockX()) + 1) * (Math.abs(this.point1.getBlockY() - this.point2.getBlockY()) + 1) * (Math.abs(this.point1.getBlockZ() - this.point2.getBlockZ()) + 1);
         if (area > 27000) {
             this.player.sendMessage(ChatColor.RED + "区域范围不能大于27000方块大小");
             return;
