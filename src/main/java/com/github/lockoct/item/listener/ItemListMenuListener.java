@@ -23,9 +23,10 @@ public class ItemListMenuListener extends BaseMenuListener {
                 sign = sign == null ? "" : sign;
                 switch (sign) {
                     case "exit" -> menu.close();
-                    case "nextPage" -> menu.setItems(menu.getCurrentPage() + 1);
-                    case "prePage" -> menu.setItems(menu.getCurrentPage() - 1);
-                    case "pageInfo" -> {}
+                    case "nextPage" -> menu.setCurrentPage(menu.getCurrentPage() + 1);
+                    case "prePage" -> menu.setCurrentPage(menu.getCurrentPage() - 1);
+                    case "pageInfo" -> {
+                    }
                     default -> menu.toKeyboardMenu(e.getRawSlot());
                 }
             }

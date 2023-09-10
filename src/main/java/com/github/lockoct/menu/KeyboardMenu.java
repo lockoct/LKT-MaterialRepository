@@ -1,7 +1,7 @@
 package com.github.lockoct.menu;
 
 import com.github.lockoct.Main;
-import com.github.lockoct.entity.MenuContext;
+import com.github.lockoct.entity.Item;
 import com.github.lockoct.item.listener.ItemListMenuListener;
 import com.github.lockoct.item.listener.ShulkerBoxPlaceMenuListener;
 import com.github.lockoct.item.task.SendItemTask;
@@ -16,17 +16,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockDataMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashMap;
+
 public class KeyboardMenu extends BaseMenu {
     private final String CALC_RESULT_PREFIX = "拿取物品的数量为：";
     private final int[] numKeyPos = new int[]{38, 10, 11, 12, 19, 20, 21, 28, 29, 30};
     private final int[] modePos = new int[]{14, 15, 16};
-    private final MenuContext context;
     private int mode = 1;
     private int calcResult = 0;
 
-    public KeyboardMenu(String title, Player player, MenuContext context) {
-        super(54, title, player, Main.plugin);
-        this.context = context;
+    public KeyboardMenu(String title, Player player, HashMap<String, Object> menuContext) {
+        super(54, title, menuContext, player, Main.plugin);
         this.setKeyboard();
         this.setModeItem();
         this.setOptItem(Material.ARROW, "返回", 48, "back");
@@ -128,8 +128,9 @@ public class KeyboardMenu extends BaseMenu {
 
     public void setCalcResult(int calcResult) {
         // 库存单位换算
-        int amount = this.context.getItemInfo().getAmount();
-        Material material = Material.getMaterial(this.context.getItemInfo().getType());
+        Item itemInfo = (Item) this.getMenuContext().get("itemInfo");
+        int amount = itemInfo.getAmount();
+        Material material = Material.getMaterial(itemInfo.getType());
         assert material != null;
         int maxStackSize = material.getMaxStackSize();
         switch (this.mode) {
@@ -159,20 +160,19 @@ public class KeyboardMenu extends BaseMenu {
     }
 
     public void back() {
-        ItemListMenu menu = new ItemListMenu("物料选择菜单", this.getPlayer());
+        ItemListMenu menu = new ItemListMenu((int) this.getMenuContext().get("fromPage"), "物料选择菜单", this.getPlayer());
         this.close();
-        menu.setItems(this.context.getFromPage());
         menu.open(new ItemListMenuListener(menu));
     }
 
     public void confirm() {
         if (this.getCalcResult() > 0) {
             if (this.mode != 3) {
-                new SendItemTask(this.getPlayer(), this.context.getItemInfo(), this.mode, this.getCalcResult()).runTaskAsynchronously(Main.plugin);
+                new SendItemTask(this.getPlayer(), (Item) this.getMenuContext().get("itemInfo"), this.mode, this.getCalcResult()).runTaskAsynchronously(Main.plugin);
                 this.close();
             } else {
-                this.context.setBoxCount(this.calcResult);
-                ShulkerBoxPlaceMenu menu = new ShulkerBoxPlaceMenu("请放置对应数量的潜影盒", this.getPlayer(), this.context);
+                this.getMenuContext().put("boxCount", this.calcResult);
+                ShulkerBoxPlaceMenu menu = new ShulkerBoxPlaceMenu("请放置对应数量的潜影盒", this.getPlayer(), this.getMenuContext());
                 menu.open(new ShulkerBoxPlaceMenuListener(menu));
             }
         }

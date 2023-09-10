@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 
@@ -51,6 +52,7 @@ public class SendBoxTask extends BukkitRunnable {
         }
 
         int needBox = this.calcRes;
+        // 当需求数量大于库存数量时，对获取物品数量进行修正
         if (amount > item.getAmount()) {
             needBox = item.getAmount() / times; //需要的潜影盒数量
             amount = needBox * times;
@@ -59,8 +61,9 @@ public class SendBoxTask extends BukkitRunnable {
             moreThanRepoAmount = false;
         }
 
-        item.setAmount(item.getAmount() - amount);
-        int res = dao.update(item);
+        // 在update语句中直接对库存做自减
+        // 条件为当前库存数量必须大于拿取数量，用于避免并发操作时库存出现负数
+        int res = dao.update(Item.class, Chain.makeSpecial("amount", "-" + amount), Cnd.where("amount", ">=", amount).and("id", "=", item.getId()));
         if (res > 0) {
             // 往潜影盒添加物品
             for (int i = 0; i < Math.min(this.shulkerBoxMap.size(), needBox); i++) {
@@ -89,6 +92,8 @@ public class SendBoxTask extends BukkitRunnable {
                 player.sendMessage(ChatColor.YELLOW + "物料库存出现变化，实际领取数量将少于请求数量");
             }
             player.sendMessage(ChatColor.GREEN + "物料领取成功，共计" + needBox + "盒物品");
+        } else {
+            player.sendMessage(ChatColor.RED + "该物品库存不足");
         }
     }
 }

@@ -4,7 +4,6 @@ import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.AreaManageMenuListener;
 import com.github.lockoct.entity.CollectArea;
 import com.github.lockoct.entity.CollectAreaChest;
-import com.github.lockoct.entity.MenuContext;
 import com.github.lockoct.utils.DatabaseUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,29 +16,23 @@ import org.nutz.dao.Dao;
 import org.nutz.dao.pager.Pager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class AreaListMenu extends BaseMenu {
-    private final int PAGE_SIZE = 45;
-    private int currentPage;
-    private int totalPage;
-    private int total;
+public class AreaListMenu extends PageableMenu {
     private List<CollectArea> areas;
     private final List<Integer> chestCountList = new ArrayList<>();
 
     public AreaListMenu(String title, Player player) {
-        super(54, title, player, Main.plugin);
+        super(title, new HashMap<>(), player, Main.plugin);
     }
 
-    public int getCurrentPage() {
-        return currentPage;
+    public AreaListMenu(int currentPage, String title, Player player) {
+        super(currentPage, title, new HashMap<>(), player, Main.plugin);
     }
 
-    public void setAreaItems() {
-        this.setAreaItems(1);
-    }
-
-    public void setAreaItems(int page) {
+    @Override
+    protected void setPageContent(int page) {
         Dao dao = DatabaseUtil.getDao();
         if (dao != null) {
             new BukkitRunnable() {
@@ -49,9 +42,8 @@ public class AreaListMenu extends BaseMenu {
                     Cnd cond = Cnd.where("deleted", "=", 0).and("create_user", "=", getPlayer().getUniqueId().toString());
                     areas = dao.query(CollectArea.class, cond.orderBy("create_time", "desc"), pager);
                     pager.setRecordCount(dao.count(CollectArea.class, cond));
-                    currentPage = page;
-                    totalPage = pager.getPageCount();
-                    total = pager.getRecordCount();
+                    setTotalPage(pager.getPageCount());
+                    setTotal(pager.getRecordCount());
                     // 设置分页
                     setPageElement();
                     // 设置退出
@@ -83,30 +75,20 @@ public class AreaListMenu extends BaseMenu {
     }
 
     // 翻页按钮、分页信息
-    private void setPageElement() {
-        Inventory inv = this.getInventory();
+    @Override
+    protected void setPageElement() {
+        super.setPageElement();
 
-        // 上一页
-        if (this.currentPage > 1) {
-            this.setOptItem(Material.ARROW, "上一页：第" + (this.currentPage - 1) + "页", PAGE_SIZE, "prePage");
-        } else {
-            inv.setItem(PAGE_SIZE, null);
-        }
+        Inventory inv = getInventory();
 
-        // 下一页
-        if (this.currentPage < this.totalPage) {
-            this.setOptItem(Material.ARROW, "下一页：第" + (this.currentPage + 1) + "页", 53, "nextPage");
-        } else {
-            inv.setItem(53, null);
-        }
-
-        // 分页信息
-        ItemStack is = this.setOptItem(Material.BOOK, "当前 " + this.currentPage + " / " + this.totalPage + " 页", 49, "pageInfo");
+        // 获取分页信息元素
+        ItemStack is = inv.getItem(49);
+        assert is != null;
         ItemMeta im = is.getItemMeta();
         assert im != null;
         // 分页附加信息
         ArrayList<String> loreList = new ArrayList<>();
-        loreList.add("共 " + this.total + " 块区域");
+        loreList.add("共 " + this.getTotal() + " 块区域");
         im.setLore(loreList);
         is.setItemMeta(im);
         inv.setItem(49, is);
@@ -114,11 +96,15 @@ public class AreaListMenu extends BaseMenu {
 
     public void toManageMenu(int index) {
         if (index < PAGE_SIZE) {
-            MenuContext context = new MenuContext();
-            context.setAreaInfo(areas.get(index));
-            context.setAreaChestCount(chestCountList.get(index));
-            context.setFromPage(this.currentPage);
-            AreaManageMenu menu = new AreaManageMenu("区域管理", this.getPlayer(), context);
+            HashMap<String, Object> context = this.getMenuContext();
+            // 区域信息
+            context.put("areaInfo", areas.get(index));
+            // 区域内箱子数量
+            context.put("areaChestCount", chestCountList.get(index));
+            // 列表菜单当前页码
+            context.put("fromPage", chestCountList.get(index));
+
+            AreaManageMenu menu = new AreaManageMenu("区域管理", this.getPlayer(), this.getMenuContext());
             this.close();
             menu.open(new AreaManageMenuListener(menu));
         }

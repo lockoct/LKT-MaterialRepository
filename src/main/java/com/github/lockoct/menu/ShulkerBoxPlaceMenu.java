@@ -1,7 +1,7 @@
 package com.github.lockoct.menu;
 
 import com.github.lockoct.Main;
-import com.github.lockoct.entity.MenuContext;
+import com.github.lockoct.entity.Item;
 import com.github.lockoct.entity.ShulkerBoxPlaceMenuData;
 import com.github.lockoct.item.listener.KeyboardMenuListener;
 import com.github.lockoct.item.task.SendBoxTask;
@@ -16,14 +16,12 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import java.util.HashMap;
 
 public class ShulkerBoxPlaceMenu extends BaseMenu {
-    private final MenuContext context;
     private final HashMap<Integer, ShulkerBoxPlaceMenuData> shulkerBoxMap = new HashMap<>();
     private final int emptySlot;
 
-    public ShulkerBoxPlaceMenu(String title, Player player, MenuContext context) {
-        super(54, title, player, Main.plugin);
-        this.context = context;
-        this.emptySlot = context.getBoxCount();
+    public ShulkerBoxPlaceMenu(String title, Player player, HashMap<String, Object> menuContext) {
+        super(54, title, menuContext, player, Main.plugin);
+        this.emptySlot = (int) menuContext.get("boxCount");
         // 设置操作按钮
         this.setOptItem(Material.RED_CONCRETE, "取消", 47, "cancel");
         this.setOptItem(Material.ARROW, "返回", 49, "back");
@@ -66,12 +64,12 @@ public class ShulkerBoxPlaceMenu extends BaseMenu {
             }
         }
 
-        new SendBoxTask(this.getPlayer(), this.context.getItemInfo(), this.shulkerBoxMap, boxCount).runTaskAsynchronously(Main.plugin);
+        new SendBoxTask(this.getPlayer(), (Item) this.getMenuContext().get("itemInfo"), this.shulkerBoxMap, boxCount).runTaskAsynchronously(Main.plugin);
         this.close();
     }
 
     public void back() {
-        KeyboardMenu menu = new KeyboardMenu("数量选择", this.getPlayer(), this.context);
+        KeyboardMenu menu = new KeyboardMenu("数量选择", this.getPlayer(), this.getMenuContext());
         this.close();
         menu.open(new KeyboardMenuListener(menu));
     }
