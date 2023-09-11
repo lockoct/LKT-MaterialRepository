@@ -1,7 +1,7 @@
 name: LKT-MaterialRepository
 version: '${project.version}'
 main: com.github.lockoct.Main
-api-version: 1.19
+api-version: 1.20
 authors: [lockoct]
 depend: [LKT-Core]
 commands:

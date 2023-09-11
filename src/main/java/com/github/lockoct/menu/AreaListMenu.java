@@ -102,7 +102,7 @@ public class AreaListMenu extends PageableMenu {
             // 区域内箱子数量
             context.put("areaChestCount", chestCountList.get(index));
             // 列表菜单当前页码
-            context.put("fromPage", chestCountList.get(index));
+            context.put("fromPage", getCurrentPage());
 
             AreaManageMenu menu = new AreaManageMenu("区域管理", this.getPlayer(), this.getMenuContext());
             this.close();
