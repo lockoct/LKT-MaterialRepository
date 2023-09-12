@@ -1,4 +1,4 @@
-## LKT-MaterialRepository
+# LKT-MaterialRepository
 
 一个使用数据库存取Minecraft物品的Spigot插件
 
