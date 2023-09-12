@@ -23,8 +23,8 @@ public class AreaListMenuListener extends BaseMenuListener {
                 sign = sign == null ? "" : sign;
                 switch (sign) {
                     case "exit" -> menu.close();
-                    case "nextPage" -> menu.setAreaItems(menu.getCurrentPage() + 1);
-                    case "prePage" -> menu.setAreaItems(menu.getCurrentPage() - 1);
+                    case "nextPage" -> menu.setCurrentPage(menu.getCurrentPage() + 1);
+                    case "prePage" -> menu.setCurrentPage(menu.getCurrentPage() - 1);
                     case "pageInfo" -> {
                     }
                     default -> menu.toManageMenu(e.getRawSlot());

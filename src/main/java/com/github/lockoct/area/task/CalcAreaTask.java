@@ -30,6 +30,9 @@ public class CalcAreaTask extends BukkitRunnable {
         int chestCount = 0;
         int key = this.player.hashCode();
         MarkData data = MarkListener.getMarkModePlayers().get(key);
+        // 统计选区内箱子前，先要把上一次选区的箱子记录清掉
+        // 避免同一个箱子添加多次
+        data.getChestLocation().clear();
 
         int maxY = Math.max(this.point1.getBlockY(), this.point2.getBlockY());
         int minY = Math.min(this.point1.getBlockY(), this.point2.getBlockY());
