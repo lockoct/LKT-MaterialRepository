@@ -4,6 +4,7 @@ import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.item.listener.KeyboardMenuListener;
 import com.github.lockoct.utils.DatabaseUtil;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -42,8 +43,6 @@ public class ItemListMenu extends PageableMenu {
                     setTotal(pager.getRecordCount());
                     // 设置分页
                     setPageElement();
-                    // 设置退出
-                    setOptItem(Material.DARK_OAK_DOOR, "退出", 48, "exit");
                     // 填充物品
                     for (int i = 0; i < PAGE_SIZE; i++) {
                         Inventory inv = getInventory();
@@ -55,7 +54,7 @@ public class ItemListMenu extends PageableMenu {
                                 assert im != null;
                                 // 物品数量填在附加信息中
                                 ArrayList<String> loreList = new ArrayList<>();
-                                loreList.add("剩余 " + items.get(i).getAmount() + " 个");
+                                loreList.add(I18nUtil.getText(Main.plugin, getPlayer(), "itemListMenu.itemInfo", items.get(i).getAmount()));
                                 im.setLore(loreList);
                                 is.setItemMeta(im);
                                 inv.setItem(i, is);
@@ -84,7 +83,7 @@ public class ItemListMenu extends PageableMenu {
         assert im != null;
         // 分页附加信息
         ArrayList<String> loreList = new ArrayList<>();
-        loreList.add("共 " + this.getTotal() + " 类物品");
+        loreList.add(I18nUtil.getText(Main.plugin, getPlayer(), "itemListMenu.pageStatisticsInfo", getTotal()));
         im.setLore(loreList);
         is.setItemMeta(im);
         inv.setItem(49, is);
@@ -92,14 +91,14 @@ public class ItemListMenu extends PageableMenu {
 
     public void toKeyboardMenu(int index) {
         if (index < PAGE_SIZE) {
-            HashMap<String, Object> context = this.getMenuContext();
+            HashMap<String, Object> context = getMenuContext();
             // 物品信息
             context.put("itemInfo", items.get(index));
             // 列表菜单当前页码
-            context.put("fromPage", this.getCurrentPage());
+            context.put("fromPage", getCurrentPage());
 
-            KeyboardMenu menu = new KeyboardMenu("数量选择", this.getPlayer(), context);
-            this.close();
+            KeyboardMenu menu = new KeyboardMenu(I18nUtil.getText(Main.plugin, getPlayer(), "keyboardMenu.title"), getPlayer(), context);
+            close();
             menu.open(new KeyboardMenuListener(menu));
         }
     }

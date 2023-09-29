@@ -1,8 +1,10 @@
 package com.github.lockoct.area.task;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.MarkListener;
 import com.github.lockoct.entity.CollectArea;
 import com.github.lockoct.utils.DatabaseUtil;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,16 +32,16 @@ public class SaveTask extends BukkitRunnable {
             tx.beginRC();
             CollectArea caTmp = tx.insertWith(ca, "chests");
             if (caTmp != null) {
-                this.player.sendMessage(ChatColor.GREEN + "采集区域保存成功，已退出标记模式");
+                player.sendMessage(ChatColor.GREEN + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.saveCmd.saveSuccessful"));
             }
             tx.commit();
         } catch (Throwable e) {
             e.printStackTrace();
             tx.rollback();
-            this.player.sendMessage(ChatColor.RED + "采集区域保存失败，已退出标记模式");
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.saveCmd.saveFailed"));
         } finally {
             tx.close();
-            MarkListener.clearMarkData(this.player);
+            MarkListener.clearMarkData(player);
         }
     }
 }

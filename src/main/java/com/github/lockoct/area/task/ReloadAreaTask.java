@@ -1,8 +1,10 @@
 package com.github.lockoct.area.task;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.entity.CollectArea;
 import com.github.lockoct.entity.CollectAreaChest;
 import com.github.lockoct.utils.DatabaseUtil;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,7 +38,7 @@ public class ReloadAreaTask extends BukkitRunnable {
 
         ArrayList<String> existChestIdList = new ArrayList<>();
         int newChestCount = 0;
-        String playerId = this.player.getUniqueId().toString();
+        String playerId = player.getUniqueId().toString();
 
         dao.fetchLinks(area, "chests");
 
@@ -44,23 +46,23 @@ public class ReloadAreaTask extends BukkitRunnable {
             tx.beginRC();
 
             // 遍历区域
-            int maxY = Math.max(this.area.getY1(), this.area.getY2());
-            int minY = Math.min(this.area.getY1(), this.area.getY2());
+            int maxY = Math.max(area.getY1(), area.getY2());
+            int minY = Math.min(area.getY1(), area.getY2());
             for (int y = minY; y <= maxY; y++) {
-                int maxZ = Math.max(this.area.getZ1(), this.area.getZ2());
-                int minZ = Math.min(this.area.getZ1(), this.area.getZ2());
+                int maxZ = Math.max(area.getZ1(), area.getZ2());
+                int minZ = Math.min(area.getZ1(), area.getZ2());
                 for (int z = minZ; z <= maxZ; z++) {
-                    int maxX = Math.max(this.area.getX1(), this.area.getX2());
-                    int minX = Math.min(this.area.getX1(), this.area.getX2());
+                    int maxX = Math.max(area.getX1(), area.getX2());
+                    int minX = Math.min(area.getX1(), area.getX2());
                     for (int x = minX; x <= maxX; x++) {
-                        Block areaBlock = new Location(Bukkit.getWorld(this.area.getWorld()), x, y, z).getBlock();
+                        Block areaBlock = new Location(Bukkit.getWorld(area.getWorld()), x, y, z).getBlock();
                         if (areaBlock.getType() == Material.CHEST) {
                             List<CollectAreaChest> tmpList = area.getChests().stream().filter(e -> e.getX() == areaBlock.getX() && e.getY() == areaBlock.getY() && e.getZ() == areaBlock.getZ()).toList();
                             CollectAreaChest chest;
                             if (tmpList.isEmpty()) {
                                 newChestCount++;
                                 chest = new CollectAreaChest();
-                                chest.setAreaId(this.area.getId());
+                                chest.setAreaId(area.getId());
                                 chest.setX(areaBlock.getX());
                                 chest.setY(areaBlock.getY());
                                 chest.setZ(areaBlock.getZ());
@@ -75,25 +77,25 @@ public class ReloadAreaTask extends BukkitRunnable {
                     }
                 }
             }
-            Cnd cond = Cnd.where("area_id", "=", this.area.getId());
+            Cnd cond = Cnd.where("area_id", "=", area.getId());
             if (existChestIdList.size() > 0) {
                 cond.and("id", "NOT IN", existChestIdList);
             }
             int res = tx.clear(CollectAreaChest.class, cond);
             tx.commit();
 
-            String msg = "采集区域更新完成";
+            String msg = I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.updateComplete");
             if (res > 0) {
-                msg = msg.concat("，减少了" + res + "个箱子");
+                msg = msg.concat(I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.decreaseChest", res));
             }
             if (newChestCount > 0) {
-                msg = msg.concat("，增加了" + newChestCount + "个箱子");
+                msg = msg.concat(I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.increaseChest", newChestCount));
             }
-            this.player.sendMessage(ChatColor.GREEN + msg);
+            player.sendMessage(ChatColor.GREEN + msg);
         } catch (Throwable e) {
             e.printStackTrace();
             tx.rollback();
-            this.player.sendMessage(ChatColor.RED + "采集区域重新识别箱子失败");
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.identifyChestFailed"));
         } finally {
             tx.close();
         }

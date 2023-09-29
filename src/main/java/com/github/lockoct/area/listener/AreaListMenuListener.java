@@ -17,7 +17,7 @@ public class AreaListMenuListener extends BaseMenuListener {
     public boolean onClick(InventoryClickEvent e) {
         if (super.onClick(e)) {
             ItemStack is = e.getCurrentItem();
-            AreaListMenu menu = (AreaListMenu) this.getMenu();
+            AreaListMenu menu = (AreaListMenu) getMenu();
             if (is != null) {
                 String sign = menu.getOperationItemPos().get(e.getRawSlot());
                 sign = sign == null ? "" : sign;

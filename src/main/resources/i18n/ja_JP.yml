@@ -1,0 +1,104 @@
+pluginMsg:
+  enableSuccess: "プラグインの起動に成功しました"
+  dbConnectFailed: "プラグインの起動に失敗しました。データベースに接続されていません。データベースを起動してから、このプラグインを再読み込みしてください"
+  commandConfigNotFound: "プラグインの起動に失敗しました。コマンドの設定が見つかりませんでした。このプラグインを再ダウンロードしてください"
+  commandNotExecInGame: "このコマンドはゲーム内で実行する必要があります"
+  invalidCornTab: "cornTab式に問題があります。デフォルトの式を使用しました: 0 0 4 * * ? *"
+  autoCollectComplete: "すべての収集タスクが完了しました"
+areaListMenu:
+  title: "エリア管理メニュー"
+  itemInfo: "エリア内に%s個のチェストがあります"
+  pageStatisticsInfo: "合計%s個のエリア"
+areaManageMenu:
+  title: "エリア管理"
+  chestStatisticsInfo: "エリア内に%s個のチェストがあります"
+  deleteSuccessful: "エリア%sの削除に成功しました"
+  btn:
+    delete: "エリアの削除"
+    enable: "有効済み"
+    disable: "停止済み"
+    reload: "エリア内のチェストを再識別"
+itemListMenu:
+  title: "アイテム選択メニュー"
+  itemInfo: "%s個残っています"
+  pageStatisticsInfo: "合計%s種類のアイテム"
+keyboardMenu:
+  title: "数量選択"
+  calcResPrefix: "取得するアイテムの数量："
+  mode:
+    getBySingle: "個数で取得"
+    getByGroup: "グループで取得"
+    getByBox: "ボックスで取得"
+  unit:
+    single: "個"
+    group: "グループ"
+    box: "ボックス"
+  btn:
+    clear: "クリア"
+    delete: "削除"
+    confirm: "確認"
+shulkerBoxPlaceMenu:
+  title: "対応する数のシュルカーボックスを配置してください"
+  notEmptyBox: "アイテムを取得するためのシュルカーボックスは空でなければなりません"
+  btn:
+    cancel: "キャンセル"
+    confirm: "確認"
+cmd:
+  helpMsg: [
+    "アイテムプラグインコマンドのヘルプ:",
+    "/mr mark - 収集エリアをマークするコマンド",
+    "/mr item - アイテムメニューを開く",
+    "/mr area - エリア管理メニューを開く",
+    "詳細な利用方法については、任意のサブコマンドを選択してください。"
+  ]
+  areaCmd:
+    helpMsg: [
+      "アイテムプラグインエリア管理メニューのヘルプ:",
+      "/mr area - エリア管理メニューを開く"
+    ]
+    updateComplete: "収集エリアの更新が完了しました"
+    decreaseChest: "%s個のチェストを減らしました"
+    increaseChest: "%s個のチェストを増やしました"
+    identifyChestFailed: "収集エリア内のチェストの再識別に失敗しました"
+  markCmd:
+    helpMsg: [
+      "アイテムプラグインマーキングコマンドのヘルプ:",
+      "/mr mark start - マーキングモードを開始する",
+      "/mr mark cancel - 保存せずにマーキングモードを終了する",
+      "/mr mark save エリア名 - エリアを保存する"
+    ]
+    startCmd:
+      helpMsg: [
+        "概要：マーキングモードを開始し、アイテム収集エリアを定義します",
+        "コマンド：/mr mark start"
+      ]
+    saveCmd:
+      helpMsg: [
+        "概要：マーキングされたエリアを保存します。プラグインはこのエリアのチェストからアイテムを収集します",
+        "コマンド：/mr mark save エリア名"
+      ]
+      markPointsInDifferentWorld: "2つのマークポイントが同じディメンションにありません。やり直してください"
+      cannotGetMarkPointWorld: "マークポイントのワールドを取得できません"
+      markPointSelectNotComplete: "マークポイントが選択されていません。保存する前に2つのマークポイントを選択してください"
+      saveSuccessful: "収集エリアの保存に成功しました。マーキングモードを終了します"
+      saveFailed: "収集エリアの保存に失敗しました。マーキングモードを終了します"
+    cancelCmd:
+      exitMarkMode: "マーキングモードをキャンセルして終了しました"
+    clearCmd:
+      selectionCleared: "選択がクリアされました"
+    notInMarkMode: "マーキングモードではありません。 /mr mark start を使用して収集エリアをマークするには、まずマーキングモードに入る必要があります"
+    alreadyInMarkMode: "既にマーキングモードに入っています。左右クリックを使用して2つのポイントを選択し、立方体として収集エリアを形成してください"
+    selectPoint: "マークポイント%sを選択しました[%s, %s, %s]"
+    areaTooLarge: "エリアの範囲は27000ブロックを超えることはできません"
+    areaStatisticsMsg: "このエリアの合計ブロックサイズは%sで、チェストは%s個あります"
+  itemCmd:
+    helpMsg: [
+      "アイテムプラグインアイテムメニューのヘルプ:",
+      "/mr item - アイテムメニューを開く"
+    ]
+    noAmount: "このアイテムの在庫はありません"
+    amountChanged: "アイテムの在庫が変更されました。実際に受け取る数量は要求された数量よりも少なくなります"
+    amountLack: "このアイテムの在庫が不足しています"
+    freeSlotLack: "空きスロットが不足しています。アイテムを受け取る前にインベントリを整理してください"
+    getSuccessful: "アイテムの受け取りに成功しました。合計%sグループ、%s個のアイテム"
+    getByBoxSuccessful: "アイテムの受け取りに成功しました。合計%s個のボックス"

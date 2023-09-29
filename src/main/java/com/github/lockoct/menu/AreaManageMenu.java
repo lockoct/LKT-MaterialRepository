@@ -5,6 +5,7 @@ import com.github.lockoct.area.listener.AreaListMenuListener;
 import com.github.lockoct.area.task.ReloadAreaTask;
 import com.github.lockoct.entity.CollectArea;
 import com.github.lockoct.utils.DatabaseUtil;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,33 +28,33 @@ public class AreaManageMenu extends BaseMenu {
         int areaChestCount = (int) menuContext.get("areaChestCount");
 
         // 设置告示信息
-        ItemStack is = this.setOptItem(Material.OAK_SIGN, areaInfo.getName(), 13, null);
+        ItemStack is = setOptItem(Material.OAK_SIGN, areaInfo.getName(), 13, null);
         ItemMeta im = is.getItemMeta();
         assert im != null;
         ArrayList<String> loreList = new ArrayList<>();
-        loreList.add("区域内共有 " + areaChestCount + " 个箱子");
+        loreList.add(I18nUtil.getText(Main.plugin, player, "areaManageMenu.chestStatisticsInfo", areaChestCount));
         im.setLore(loreList);
         is.setItemMeta(im);
-        this.getInventory().setItem(13, is);
+        getInventory().setItem(13, is);
 
         // 删除按钮
-        this.setOptItem(Material.BARRIER, "删除区域", 29, "delete");
+        setOptItem(Material.BARRIER, I18nUtil.getText(Main.plugin, player, "areaManageMenu.btn.delete"), 29, "delete");
 
         // 启用/禁用按钮
-        this.enabled = areaInfo.isEnabled();
-        String enableStr = this.enabled ? "已启用" : "已禁用";
-        Material enableItemMaterial = this.enabled ? Material.LIME_CONCRETE : Material.RED_CONCRETE;
-        this.setOptItem(enableItemMaterial, enableStr, 31, "enable");
+        enabled = areaInfo.isEnabled();
+        String enableStr = I18nUtil.getText(Main.plugin, player, enabled ? "areaManageMenu.btn.enable" : "areaManageMenu.btn.disable");
+        Material enableItemMaterial = enabled ? Material.LIME_CONCRETE : Material.RED_CONCRETE;
+        setOptItem(enableItemMaterial, enableStr, 31, "enable");
 
         // 重新识别按钮
-        this.setOptItem(Material.COMPASS, "重新识别区域内箱子", 33, "reload");
+        setOptItem(Material.COMPASS, I18nUtil.getText(Main.plugin, player, "areaManageMenu.btn.reload"), 33, "reload");
 
         // 返回、退出按钮
-        this.setOptItem(Material.ARROW, "返回", 48, "back");
-        this.setOptItem(Material.DARK_OAK_DOOR, "退出", 50, "exit");
+        setOptItem(Material.ARROW, I18nUtil.getCommonText(player, "menu.back"), 48, "back");
+        setOptItem(Material.DARK_OAK_DOOR, I18nUtil.getCommonText(player, "menu.exit"), 50, "exit");
 
         // 背景
-        this.setBackGround(Material.BLUE_STAINED_GLASS_PANE);
+        setBackGround(Material.BLUE_STAINED_GLASS_PANE);
     }
 
     public void enable() {
@@ -67,7 +68,7 @@ public class AreaManageMenu extends BaseMenu {
                     area.setEnabled(enabled);
                     int res = dao.update(area);
                     if (res > 0) {
-                        String enableStr = enabled ? "已启用" : "已禁用";
+                        String enableStr = I18nUtil.getText(Main.plugin, getPlayer(), enabled ? "areaManageMenu.btn.enable" : "areaManageMenu.btn.disable");
                         Material enableItemMaterial = enabled ? Material.LIME_CONCRETE : Material.RED_CONCRETE;
                         ItemStack is = getInventory().getItem(31);
                         assert is != null;
@@ -92,22 +93,22 @@ public class AreaManageMenu extends BaseMenu {
                     area.setDeleted(true);
                     int res = dao.update(area);
                     if (res > 0) {
-                        getPlayer().sendMessage(ChatColor.GREEN + "区域 " + area.getName() + " 删除成功");
+                        getPlayer().sendMessage(ChatColor.GREEN + I18nUtil.getText(Main.plugin, getPlayer(), "areaManageMenu.deleteSuccessful", area.getName()));
                     }
                 }
             }.runTaskAsynchronously(Main.plugin);
-            this.close();
+            close();
         }
     }
 
     public void reload() {
-        new ReloadAreaTask((CollectArea) this.getMenuContext().get("areaInfo"), this.getPlayer()).runTaskAsynchronously(Main.plugin);
-        this.close();
+        new ReloadAreaTask((CollectArea) getMenuContext().get("areaInfo"), getPlayer()).runTaskAsynchronously(Main.plugin);
+        close();
     }
 
     public void back() {
-        AreaListMenu menu = new AreaListMenu((int) this.getMenuContext().get("fromPage"), "区域管理菜单", this.getPlayer());
-        this.close();
+        AreaListMenu menu = new AreaListMenu((int) getMenuContext().get("fromPage"), I18nUtil.getText(Main.plugin, getPlayer(), "areaListMenu.title"), getPlayer());
+        close();
         menu.open(new AreaListMenuListener(menu));
     }
 }

@@ -1,7 +1,9 @@
 package com.github.lockoct.area.command.mark.sub;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.MarkListener;
 import com.github.lockoct.command.BaseCommandHandler;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,7 +22,7 @@ public class CancelSubCommandHandler extends BaseCommandHandler {
         Player player = (Player) sender;
         boolean res = MarkListener.clearMarkData(player);
         if (res) {
-            player.sendMessage("已取消并退出标记模式");
+            player.sendMessage(I18nUtil.getText(Main.plugin, player, "cmd.markCmd.cancelCmd.exitMarkMode"));
         }
     }
 }

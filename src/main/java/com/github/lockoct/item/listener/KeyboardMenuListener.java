@@ -17,7 +17,7 @@ public class KeyboardMenuListener extends BaseMenuListener {
     public boolean onClick(InventoryClickEvent e) {
         if (super.onClick(e)) {
             ItemStack is = e.getCurrentItem();
-            KeyboardMenu menu = (KeyboardMenu) this.getMenu();
+            KeyboardMenu menu = (KeyboardMenu) getMenu();
             if (is != null) {
                 String sign = menu.getOperationItemPos().get(e.getRawSlot());
                 sign = sign == null ? "" : sign;

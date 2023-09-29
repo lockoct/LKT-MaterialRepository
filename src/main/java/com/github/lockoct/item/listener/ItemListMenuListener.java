@@ -17,7 +17,7 @@ public class ItemListMenuListener extends BaseMenuListener {
     public boolean onClick(InventoryClickEvent e) {
         if (super.onClick(e)) {
             ItemStack is = e.getCurrentItem();
-            ItemListMenu menu = (ItemListMenu) this.getMenu();
+            ItemListMenu menu = (ItemListMenu) getMenu();
             if (is != null) {
                 String sign = menu.getOperationItemPos().get(e.getRawSlot());
                 sign = sign == null ? "" : sign;

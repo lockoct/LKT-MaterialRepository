@@ -7,6 +7,7 @@ import com.github.lockoct.command.BaseCommandHandler;
 import com.github.lockoct.entity.CollectArea;
 import com.github.lockoct.entity.CollectAreaChest;
 import com.github.lockoct.entity.MarkData;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -16,14 +17,6 @@ import java.util.ArrayList;
 
 public class SaveSubCommandHandler extends BaseCommandHandler {
     private static SaveSubCommandHandler instance;
-
-    public SaveSubCommandHandler() {
-        // 先清除后添加
-        helpStrList.clear();
-        // 添加帮助信息
-        helpStrList.add("介绍：保存标记区域，插件后续将从该区域中的箱子采集物品");
-        helpStrList.add("命令：/mr mark save 区域名称");
-    }
 
     public static SaveSubCommandHandler getInstance() {
         if (instance == null) {
@@ -38,7 +31,7 @@ public class SaveSubCommandHandler extends BaseCommandHandler {
         int key = player.hashCode();
         // 输出帮助
         if (args.length != 2) {
-            doHelp(player);
+            doHelp(Main.plugin, player, "cmd.markCmd.saveCmd.helpMsg");
             return;
         }
 
@@ -53,15 +46,15 @@ public class SaveSubCommandHandler extends BaseCommandHandler {
             if (point1 != null && point2 != null) {
                 if (point1.getWorld() != null && point2.getWorld() != null) {
                     if (!point1.getWorld().equals(point2.getWorld())) {
-                        player.sendMessage(ChatColor.RED + "两个标记点不在同一维度，请重新标记");
+                        player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.saveCmd.markPointsInDifferentWorld"));
                         return;
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED + "无法获取标记点所在世界");
+                    player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.saveCmd.cannotGetMarkPointWorld"));
                     return;
                 }
             } else {
-                player.sendMessage(ChatColor.RED + "标记点未选取完成，请选取两个标记点后再进行保存");
+                player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.saveCmd.markPointSelectNotComplete"));
                 return;
             }
 
@@ -102,7 +95,7 @@ public class SaveSubCommandHandler extends BaseCommandHandler {
             int taskId = task.runTaskAsynchronously(Main.plugin).getTaskId();
             data.setSaveTaskId(taskId);
         } else {
-            player.sendMessage(ChatColor.RED + "未进入标记模式，请先使用 /mr mark start 进入标记模式标记采集区域");
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.notInMarkMode"));
         }
     }
 }

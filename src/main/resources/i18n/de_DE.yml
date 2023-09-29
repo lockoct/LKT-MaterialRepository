@@ -1,0 +1,104 @@
+pluginMsg:
+  enableSuccess: "Plugin wurde erfolgreich gestartet"
+  dbConnectFailed: "Plugin konnte nicht gestartet werden, Datenbank nicht verbunden. Bitte starten Sie die Datenbank und laden Sie das Plugin erneut."
+  commandConfigNotFound: "Plugin konnte nicht gestartet werden, Befehlskonfiguration nicht gefunden. Bitte laden Sie dieses Plugin erneut herunter."
+  commandNotExecInGame: "Dieser Befehl muss im Spiel ausgeführt werden."
+  invalidCornTab: "Ein Problem mit dem cornTab-Ausdruck ist aufgetreten, Standardausdruck wird verwendet: 0 0 4 * * ? *"
+  autoCollectComplete: "Alle Sammelaufgaben wurden abgeschlossen."
+areaListMenu:
+  title: "Bereichsverwaltungsmenü"
+  itemInfo: "%s Kisten im Bereich"
+  pageStatisticsInfo: "Insgesamt %s Bereiche"
+areaManageMenu:
+  title: "Bereichsverwaltung"
+  chestStatisticsInfo: "%s Kisten im Bereich"
+  deleteSuccessful: "Bereich %s erfolgreich gelöscht"
+  btn:
+    delete: "Bereich löschen"
+    enable: "Aktiviert"
+    disable: "Deaktiviert"
+    reload: "Erkennung der Kisten im Bereich neu laden"
+itemListMenu:
+  title: "Menü zur Auswahl von Gegenständen"
+  itemInfo: "%s übrig"
+  pageStatisticsInfo: "Insgesamt %s Arten von Gegenständen"
+keyboardMenu:
+  title: "Mengenauswahl"
+  calcResPrefix: "Menge der ausgewählten Gegenstände: "
+  mode:
+    getBySingle: "Einzeln abrufen"
+    getByGroup: "Nach Gruppe abrufen"
+    getByBox: "Nach Box abrufen"
+  unit:
+    single: "Stk."
+    group: "Gruppen"
+    box: "Boxen"
+  btn:
+    clear: "Leeren"
+    delete: "Löschen"
+    confirm: "Bestätigen"
+shulkerBoxPlaceMenu:
+  title: "Bitte platzieren Sie die entsprechende Anzahl von Shulker-Boxen"
+  notEmptyBox: "Die Shulker-Box zum Sammeln muss leer sein"
+  btn:
+    cancel: "Abbrechen"
+    confirm: "Bestätigen"
+cmd:
+  helpMsg: [
+    "Hilfe für die Befehle des Item-Plugins:",
+    "/mr mark - Befehl zum Markieren eines Sammelbereichs",
+    "/mr item - Öffnen des Item-Menüs",
+    "/mr area - Öffnen des Bereichsverwaltungsmenüs",
+    "Wählen Sie eine Unteranweisung, um detaillierte Informationen zur Verwendung zu erhalten."
+  ]
+  areaCmd:
+    helpMsg: [
+      "Hilfe für das Bereichsverwaltungsmenü des Item-Plugins:",
+      "/mr area - Öffnen des Bereichsverwaltungsmenüs"
+    ]
+    updateComplete: "Aktualisierung des Sammelbereichs abgeschlossen"
+    decreaseChest: ", %s Kisten entfernt"
+    increaseChest: ", %s Kisten hinzugefügt"
+    identifyChestFailed: "Ermittlung der Kisten im Sammelbereich fehlgeschlagen"
+  markCmd:
+    helpMsg: [
+      "Hilfe für den Markierungsbefehl des Item-Plugins:",
+      "/mr mark start - Markierungsmodus starten",
+      "/mr mark cancel - Markierungsmodus beenden, ohne zu speichern",
+      "/mr mark save Bereichsname - Bereich speichern"
+    ]
+    startCmd:
+      helpMsg: [
+        "Beschreibung: Startet den Markierungsmodus, um den Item-Sammelbereich festzulegen",
+        "Befehl: /mr mark start"
+      ]
+    saveCmd:
+      helpMsg: [
+        "Beschreibung: Speichert den markierten Bereich. Das Plugin wird Gegenstände aus den Kisten in diesem Bereich sammeln",
+        "Befehl: /mr mark save Bereichsname"
+      ]
+      markPointsInDifferentWorld: "Die beiden Markierungspunkte befinden sich nicht in der gleichen Dimension. Bitte erneut markieren."
+      cannotGetMarkPointWorld: "Die Welt des Markierungspunkts konnte nicht abgerufen werden"
+      markPointSelectNotComplete: "Die Markierungspunkte wurden nicht ausgewählt. Bitte wählen Sie zwei Markierungspunkte aus, bevor Sie speichern."
+      saveSuccessful: "Sammelbereich erfolgreich gespeichert. Verlassen des Markierungsmodus."
+      saveFailed: "Speichern des Sammelbereichs fehlgeschlagen. Verlassen des Markierungsmodus."
+    cancelCmd:
+      exitMarkMode: "Abgebrochen und Markierungsmodus beendet"
+    clearCmd:
+      selectionCleared: "Auswahl gelöscht"
+    notInMarkMode: "Sie befinden sich nicht im Markierungsmodus. Bitte verwenden Sie /mr mark start, um in den Markierungsmodus für den Item-Sammelbereich einzutreten."
+    alreadyInMarkMode: "Sie befinden sich bereits im Markierungsmodus. Verwenden Sie die linke und rechte Maustaste, um zwei Punkte auszuwählen und einen Würfel als Sammelbereich zu markieren."
+    selectPoint: "Markierungspunkt %s ausgewählt [%s, %s, %s]"
+    areaTooLarge: "Der Bereich darf nicht größer als 27000 Blöcke sein."
+    areaStatisticsMsg: "Die Gesamtgröße dieses Bereichs beträgt %s Blöcke mit %s Kisten."
+  itemCmd:
+    helpMsg: [
+      "Hilfe für das Item-Menü des Item-Plugins:",
+      "/mr item - Öffnen des Item-Menüs"
+    ]
+    noAmount: "Kein Bestand für diesen Gegenstand vorhanden"
+    amountChanged: "Der Bestand des Gegenstands hat sich geändert, die tatsächlich empfangene Menge wird geringer sein als die angeforderte Menge"
+    amountLack: "Unzureichender Bestand für diesen Gegenstand"
+    freeSlotLack: "Nicht genügend freie Inventarslots. Bitte räumen Sie das Inventar auf, bevor Sie Gegenstände erhalten."
+    getSuccessful: "Gegenstände erfolgreich erhalten. Insgesamt %s Gruppen, %s Gegenstände"
+    getByBoxSuccessful: "Gegenstände erfolgreich erhalten. Insgesamt %s Boxen"

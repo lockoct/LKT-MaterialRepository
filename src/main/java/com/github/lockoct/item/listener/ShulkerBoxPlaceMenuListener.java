@@ -30,7 +30,7 @@ public class ShulkerBoxPlaceMenuListener extends BaseMenuListener {
     public boolean onClick(InventoryClickEvent e) {
         if (super.onClick(e)) {
             ItemStack is = e.getCurrentItem();
-            ShulkerBoxPlaceMenu menu = (ShulkerBoxPlaceMenu) this.getMenu();
+            ShulkerBoxPlaceMenu menu = (ShulkerBoxPlaceMenu) getMenu();
             if (is != null) {
                 int currentPos = e.getRawSlot();
 
@@ -101,7 +101,7 @@ public class ShulkerBoxPlaceMenuListener extends BaseMenuListener {
     @Override
     @EventHandler
     public boolean onClose(InventoryCloseEvent e) {
-        boolean validate = this.getMenu().getPlayer().equals(e.getPlayer()) && this.getMenu().getInventory().equals(e.getInventory());
+        boolean validate = getMenu().getPlayer().equals(e.getPlayer()) && getMenu().getInventory().equals(e.getInventory());
         if (validate) {
             PlayerInventory playerInv = e.getPlayer().getInventory();
             // 清除所有物品附魔

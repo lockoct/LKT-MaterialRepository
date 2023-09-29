@@ -1,21 +1,15 @@
 package com.github.lockoct.item.command;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.command.BaseCommandHandler;
 import com.github.lockoct.item.listener.ItemListMenuListener;
 import com.github.lockoct.menu.ItemListMenu;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ItemCommandHandler extends BaseCommandHandler {
     private static ItemCommandHandler instance;
-
-    public ItemCommandHandler() {
-        // 先清除后添加
-        helpStrList.clear();
-        // 添加帮助信息
-        helpStrList.add("物料插件物料菜单帮助：");
-        helpStrList.add("/mr item - 打开物料菜单");
-    }
 
     public static ItemCommandHandler getInstance() {
         if (instance == null) {
@@ -29,10 +23,10 @@ public class ItemCommandHandler extends BaseCommandHandler {
         Player player = (Player) sender;
         // 输出帮助
         if (args.length > 0) {
-            doHelp(player);
+            doHelp(Main.plugin, player, "cmd.itemCmd.helpMsg");
             return;
         }
-        ItemListMenu menu = new ItemListMenu("物料选择菜单", player);
+        ItemListMenu menu = new ItemListMenu(I18nUtil.getText(Main.plugin, player, "itemListMenu.title"), player);
         menu.open(new ItemListMenuListener(menu));
     }
 }

@@ -1,0 +1,104 @@
+pluginMsg:
+  enableSuccess: "插件啓動成功"
+  dbConnectFailed: "插件啓動失敗，未連接資料庫，請開啓資料庫後重新加載本插件"
+  commandConfigNotFound: "插件啓動失敗，找不到命令配置，請重新下載本插件"
+  commandNotExecInGame: "該命令必須在遊戲中執行"
+  invalidCornTab: "cornTab表達式存在問題，已使用默認表達式：0 0 4 * * ? *"
+  autoCollectComplete: "所有採集任務已執行完畢"
+areaListMenu:
+  title: "區域管理菜單"
+  itemInfo: "區域內共有 %s 個箱子"
+  pageStatisticsInfo: "共 %s 塊區域"
+areaManageMenu:
+  title: "區域管理"
+  chestStatisticsInfo: "區域內共有 %s 個箱子"
+  deleteSuccessful: "區域 %s 刪除成功"
+  btn:
+    delete: "刪除區域"
+    enable: "已啓用"
+    disable: "已禁用"
+    reload: "重新識別區域內箱子"
+itemListMenu:
+  title: "物料選擇菜單"
+  itemInfo: "剩餘 %s 個"
+  pageStatisticsInfo: "共 %s 類物品"
+keyboardMenu:
+  title: "數量選擇"
+  calcResPrefix: "拿取物品的數量為："
+  mode:
+    getBySingle: "按個獲取"
+    getByGroup: "按組獲取"
+    getByBox: "按盒獲取"
+  unit:
+    single: "個"
+    group: "組"
+    box: "盒"
+  btn:
+    clear: "清空"
+    delete: "刪除"
+    confirm: "確認"
+shulkerBoxPlaceMenu:
+  title: "請放置對應數量的潛影盒"
+  notEmptyBox: "用於取貨的潛影盒必須為空潛影盒"
+  btn:
+    cancel: "取消"
+    confirm: "確認"
+cmd:
+  helpMsg: [
+    "物料插件命令幫助：",
+    "/mr mark - 標記採集區域命令",
+    "/mr item - 開啟物料菜單",
+    "/mr area - 開啟區域管理菜單",
+    "選擇輸入任意子命令，可查看詳細用法。"
+  ]
+  areaCmd:
+    helpMsg: [
+      "物料插件區域管理菜單幫助：",
+      "/mr area - 開啟區域管理菜單"
+    ]
+    updateComplete: "採集區域更新完成"
+    decreaseChest: "，減少了%s個箱子"
+    increaseChest: "，增加了%s個箱子"
+    identifyChestFailed: "採集區域重新識別箱子失敗"
+  markCmd:
+    helpMsg: [
+      "物料插件標記命令幫助：",
+      "/mr mark start - 開啟標記模式",
+      "/mr mark cancel - 不保存退出標記模式",
+      "/mr mark save 區域名稱 - 保存區域"
+    ]
+    startCmd:
+      helpMsg: [
+        "介紹：開啟標記模式，在標記模式下可劃定物料採集區域",
+        "命令：/mr mark start"
+      ]
+    saveCmd:
+      helpMsg: [
+        "介紹：保存標記區域，插件後續將從該區域中的箱子採集物品",
+        "命令：/mr mark save 區域名稱"
+      ]
+      markPointsInDifferentWorld: "兩個標記點不在同一維度，請重新標記"
+      cannotGetMarkPointWorld: "無法獲取標記點所在世界"
+      markPointSelectNotComplete: "標記點未選取完成，請選取兩個標記點後再進行保存"
+      saveSuccessful: "採集區域保存成功，已退出標記模式"
+      saveFailed: "採集區域保存失敗，已退出標記模式"
+    cancelCmd:
+      exitMarkMode: "已取消並退出標記模式"
+    clearCmd:
+      selectionCleared: "已清除選區"
+    notInMarkMode: "未進入標記模式，請先使用 /mr mark start 進入標記模式標記採集區域"
+    alreadyInMarkMode: "已進入標記模式，請使用左右鍵分別選取兩個點，兩個點之間形成立方體為採集區域"
+    selectPoint: "已選中第%s個標記點[%s, %s, %s]"
+    areaTooLarge: "區域範圍不能大於27000方塊大小"
+    areaStatisticsMsg: "該區域總計%s方塊大小，有箱子%s個"
+  itemCmd:
+    helpMsg: [
+      "物料插件物料菜單幫助：",
+      "/mr item - 開啟物料菜單"
+    ]
+    noAmount: "該物品暫無庫存"
+    amountChanged: "物料庫存出現變化，實際領取數量將少於請求數量"
+    amountLack: "該物品庫存不足"
+    freeSlotLack: "背包空餘格子數量不足，請先清理背包後再領取物料"
+    getSuccessful: "物料領取成功，共計%s組%s個物品"
+    getByBoxSuccessful: "物料領取成功，共計%s盒物品"

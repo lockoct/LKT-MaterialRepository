@@ -5,6 +5,7 @@ import com.github.lockoct.entity.CollectArea;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.utils.ColorLogUtil;
 import com.github.lockoct.utils.DatabaseUtil;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -64,7 +65,7 @@ public class AutoCollectJob implements Job {
                                     }
                                 });
                             });
-                            ColorLogUtil.logSuccess(Main.plugin, "所有采集任务已执行完毕");
+                            ColorLogUtil.logSuccess(Main.plugin, I18nUtil.getText(Main.plugin, "pluginMsg.autoCollectComplete"));
                         }
                     }
                 }.runTask(Main.plugin);
