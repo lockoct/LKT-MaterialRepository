@@ -153,7 +153,7 @@ public class KeyboardMenu extends BaseMenu {
             case 2 -> modeStr = I18nUtil.getText(Main.plugin, player, "keyboardMenu.unit.group");
             case 3 -> modeStr = I18nUtil.getText(Main.plugin, player, "keyboardMenu.unit.box");
         }
-        im.setDisplayName(I18nUtil.getText(Main.plugin, player, "keyboardMenu.calcResPrefix") + calcResult + modeStr);
+        im.setDisplayName(I18nUtil.getText(Main.plugin, player, "keyboardMenu.calcResPrefix") + this.calcResult + modeStr);
         calcMsg.setItemMeta(im);
         getInventory().setItem(24, calcMsg);
     }
