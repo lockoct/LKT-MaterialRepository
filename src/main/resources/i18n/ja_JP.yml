@@ -7,17 +7,17 @@ pluginMsg:
   autoCollectComplete: "すべての収集タスクが完了しました"
 areaListMenu:
   title: "エリア管理メニュー"
-  itemInfo: "エリア内に%s個のチェストがあります"
+  itemInfo: "エリア内には%s個のコンテナがあります"
   pageStatisticsInfo: "合計%s個のエリア"
 areaManageMenu:
   title: "エリア管理"
-  chestStatisticsInfo: "エリア内に%s個のチェストがあります"
+  containerStatisticsInfo: "エリア内には%s個のコンテナがあります"
   deleteSuccessful: "エリア%sの削除に成功しました"
   btn:
     delete: "エリアの削除"
     enable: "有効済み"
     disable: "停止済み"
-    reload: "エリア内のチェストを再識別"
+    reload: "エリアコンテナを再認識"
 itemListMenu:
   title: "アイテム選択メニュー"
   itemInfo: "%s個残っています"
@@ -56,10 +56,17 @@ cmd:
       "アイテムプラグインエリア管理メニューのヘルプ:",
       "/mr area - エリア管理メニューを開く"
     ]
-    updateComplete: "収集エリアの更新が完了しました"
-    decreaseChest: "%s個のチェストを減らしました"
-    increaseChest: "%s個のチェストを増やしました"
-    identifyChestFailed: "収集エリア内のチェストの再識別に失敗しました"
+    reloadMsg:
+      updateComplete: "収集エリアの更新が完了しました"
+      decrease: "、減少しました"
+      increase: "、増加しました"
+      chestCount: "%s個のチェスト、"
+      barrelCount: "%s個のバレル、"
+      furnaceCount: "%s個のかまど、"
+      blastFurnaceCount: "%s個の溶鉱炉、"
+      smokerCount: "%s個の燻製器、"
+      hopperCount: "%s個のホッパー、"
+    identifyContainerFailed: "収集エリアのコンテナの再認識に失敗しました"
   markCmd:
     helpMsg: [
       "アイテムプラグインマーキングコマンドのヘルプ:",
@@ -74,7 +81,7 @@ cmd:
       ]
     saveCmd:
       helpMsg: [
-        "概要：マーキングされたエリアを保存します。プラグインはこのエリアのチェストからアイテムを収集します",
+        "概要：マークしたエリアを保存し、プラグインはそのエリアのコンテナからアイテムを収集します",
         "コマンド：/mr mark save エリア名"
       ]
       markPointsInDifferentWorld: "2つのマークポイントが同じディメンションにありません。やり直してください"
@@ -90,7 +97,15 @@ cmd:
     alreadyInMarkMode: "既にマーキングモードに入っています。左右クリックを使用して2つのポイントを選択し、立方体として収集エリアを形成してください"
     selectPoint: "マークポイント%sを選択しました[%s, %s, %s]"
     areaTooLarge: "エリアの範囲は27000ブロックを超えることはできません"
-    areaStatisticsMsg: "このエリアの合計ブロックサイズは%sで、チェストは%s個あります"
+    areaStatisticsMsg:
+      start: "このエリアの合計サイズは%sブロックで、"
+      chestCount: "%s個のチェスト、"
+      barrelCount: "%s個のバレル、"
+      furnaceCount: "%s個のかまど、"
+      blastFurnaceCount: "%s個の溶鉱炉、"
+      smokerCount: "%s個の燻製器、"
+      hopperCount: "%s個のホッパー、"
+      noContainer: "このエリアの合計サイズは%sブロックで、コンテナは見つかりませんでした"
   itemCmd:
     helpMsg: [
       "アイテムプラグインアイテムメニューのヘルプ:",

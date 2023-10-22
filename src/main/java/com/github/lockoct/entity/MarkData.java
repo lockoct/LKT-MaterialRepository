@@ -1,10 +1,13 @@
 package com.github.lockoct.entity;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MarkData {
     private Player player;
@@ -13,7 +16,7 @@ public class MarkData {
     private Location markPoint2;
     private int calcTaskId;
     private int saveTaskId;
-    private ArrayList<Location> chestLocation;
+    private final Map<Material, ArrayList<Location>> containerLocation = new HashMap<>();
 
     public Player getPlayer() {
         return player;
@@ -63,10 +66,7 @@ public class MarkData {
         this.saveTaskId = saveTaskId;
     }
 
-    public ArrayList<Location> getChestLocation() {
-        if (chestLocation == null) {
-            chestLocation = new ArrayList<>();
-        }
-        return chestLocation;
+    public Map<Material, ArrayList<Location>> getContainerLocation() {
+        return containerLocation;
     }
 }

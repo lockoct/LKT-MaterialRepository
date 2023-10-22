@@ -6,7 +6,7 @@
 
     <groupId>com.github.lockoct</groupId>
     <artifactId>LKT-MaterialRepository</artifactId>
-    <version>0.5.3</version>
+    <version>0.5.4</version>
     <packaging>jar</packaging>
 
     <name>LKT-MaterialRepository</name>

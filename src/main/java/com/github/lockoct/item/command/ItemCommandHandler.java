@@ -3,7 +3,7 @@ package com.github.lockoct.item.command;
 import com.github.lockoct.Main;
 import com.github.lockoct.command.BaseCommandHandler;
 import com.github.lockoct.item.listener.ItemListMenuListener;
-import com.github.lockoct.menu.ItemListMenu;
+import com.github.lockoct.item.menu.ItemListMenu;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

@@ -7,17 +7,17 @@ pluginMsg:
   autoCollectComplete: "Toutes les tâches de collecte ont été effectuées."
 areaListMenu:
   title: "Menu de gestion des zones"
-  itemInfo: "%s coffres dans la zone"
+  itemInfo: "Il y a un total de %s conteneurs dans cette zone."
   pageStatisticsInfo: "Total de %s zones"
 areaManageMenu:
   title: "Gestion des zones"
-  chestStatisticsInfo: "%s coffres dans la zone"
+  containerStatisticsInfo: "Il y a un total de %s conteneurs dans cette zone."
   deleteSuccessful: "Zone %s supprimée avec succès"
   btn:
     delete: "Supprimer la zone"
     enable: "Activé"
     disable: "Désactivé"
-    reload: "Recharger la reconnaissance des coffres dans la zone"
+    reload: "Reconnaître à nouveau les conteneurs"
 itemListMenu:
   title: "Menu de sélection des objets"
   itemInfo: "%s restants"
@@ -56,10 +56,17 @@ cmd:
       "Aide pour le menu de gestion des zones du plugin d'objets :",
       "/mr area - Ouvrir le menu de gestion des zones"
     ]
-    updateComplete: "Mise à jour de la zone de collecte terminée"
-    decreaseChest: ", %s coffres en moins"
-    increaseChest: ", %s coffres en plus"
-    identifyChestFailed: "Échec de la reconnaissance des coffres dans la zone de collecte"
+    reloadMsg:
+      updateComplete: "Mise à jour de la zone de collecte terminée"
+      decrease: " Diminution"
+      increase: " Augmentation"
+      chestCount: " %s coffre(s),"
+      barrelCount: " %s tonneau(x),"
+      furnaceCount: " %s four(s),"
+      blastFurnaceCount: " %s haut-fourneau(x),"
+      smokerCount: " %s fumoir(s),"
+      hopperCount: " %s entonnoir(s),"
+    identifyContainerFailed: "Échec de la reconnaissance de conteneur de collecte"
   markCmd:
     helpMsg: [
       "Aide pour la commande de marquage du plugin d'objets :",
@@ -74,7 +81,7 @@ cmd:
       ]
     saveCmd:
       helpMsg: [
-        "Description : Enregistrez la zone marquée. Le plugin collectera les objets à partir des coffres de cette zone",
+        "Description : Enregistrer une zone de collection de manière à ce que le plugin puisse commencer à collecter les objets.",
         "Commande : /mr mark save NomZone"
       ]
       markPointsInDifferentWorld: "Les deux points de marquage ne sont pas dans la même dimension. Veuillez recommencer."
@@ -90,7 +97,15 @@ cmd:
     alreadyInMarkMode: "Vous êtes déjà en mode de marquage. Utilisez le clic gauche et droit pour sélectionner deux points, formant un cube comme zone de collecte."
     selectPoint: "Point de marquage %s sélectionné [%s, %s, %s]"
     areaTooLarge: "La zone ne peut pas être plus grande que 27000 blocs."
-    areaStatisticsMsg: "La taille totale de cette zone est de %s blocs, avec %s coffres."
+    areaStatisticsMsg:
+      start: "Dans cette zone, qui se compose au total de %s blocs,"
+      chestCount: " %s coffre(s),"
+      barrelCount: " %s tonneau(x),"
+      furnaceCount: " %s four(s),"
+      blastFurnaceCount: " %s haut-fourneau(x),"
+      smokerCount: " %s fumoir(s),"
+      hopperCount: " %s entonnoir(s),"
+      noContainer: "Il n'y a pas de conteneur dans la zone qui se compose au total de %s blocs."
   itemCmd:
     helpMsg: [
       "Aide pour le menu des objets du plugin d'objets :",

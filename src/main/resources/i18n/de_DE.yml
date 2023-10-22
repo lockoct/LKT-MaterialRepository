@@ -7,17 +7,17 @@ pluginMsg:
   autoCollectComplete: "Alle Sammelaufgaben wurden abgeschlossen."
 areaListMenu:
   title: "Bereichsverwaltungsmenü"
-  itemInfo: "%s Kisten im Bereich"
+  itemInfo: "In diesem Bereich befinden sich insgesamt %s Container."
   pageStatisticsInfo: "Insgesamt %s Bereiche"
 areaManageMenu:
   title: "Bereichsverwaltung"
-  chestStatisticsInfo: "%s Kisten im Bereich"
+  containerStatisticsInfo: "In diesem Bereich befinden sich insgesamt %s Container."
   deleteSuccessful: "Bereich %s erfolgreich gelöscht"
   btn:
     delete: "Bereich löschen"
     enable: "Aktiviert"
     disable: "Deaktiviert"
-    reload: "Erkennung der Kisten im Bereich neu laden"
+    reload: "Container erneut erkennen"
 itemListMenu:
   title: "Menü zur Auswahl von Gegenständen"
   itemInfo: "%s übrig"
@@ -56,10 +56,17 @@ cmd:
       "Hilfe für das Bereichsverwaltungsmenü des Item-Plugins:",
       "/mr area - Öffnen des Bereichsverwaltungsmenüs"
     ]
-    updateComplete: "Aktualisierung des Sammelbereichs abgeschlossen"
-    decreaseChest: ", %s Kisten entfernt"
-    increaseChest: ", %s Kisten hinzugefügt"
-    identifyChestFailed: "Ermittlung der Kisten im Sammelbereich fehlgeschlagen"
+    reloadMsg:
+      updateComplete: "Aktualisierung des Sammelbereichs abgeschlossen"
+      decrease: " Abnahme"
+      increase: " Erhöhung"
+      chestCount: " %s Truhe(n),"
+      barrelCount: " %s Fass(Fässer),"
+      furnaceCount: " %s Ofen(Öfen),"
+      blastFurnaceCount: " %s Schmelzofen(Schmelzöfen),"
+      smokerCount: " %s Räucherofen(Räucheröfen),"
+      hopperCount: " %s Trichter,"
+    identifyContainerFailed: "Containererkennung fehlgeschlagen"
   markCmd:
     helpMsg: [
       "Hilfe für den Markierungsbefehl des Item-Plugins:",
@@ -74,7 +81,7 @@ cmd:
       ]
     saveCmd:
       helpMsg: [
-        "Beschreibung: Speichert den markierten Bereich. Das Plugin wird Gegenstände aus den Kisten in diesem Bereich sammeln",
+        "Beschreibung: Speichern Sie einen Sammelbereich, damit das Plugin mit dem Sammeln von Artikeln beginnen kann.",
         "Befehl: /mr mark save Bereichsname"
       ]
       markPointsInDifferentWorld: "Die beiden Markierungspunkte befinden sich nicht in der gleichen Dimension. Bitte erneut markieren."
@@ -90,7 +97,15 @@ cmd:
     alreadyInMarkMode: "Sie befinden sich bereits im Markierungsmodus. Verwenden Sie die linke und rechte Maustaste, um zwei Punkte auszuwählen und einen Würfel als Sammelbereich zu markieren."
     selectPoint: "Markierungspunkt %s ausgewählt [%s, %s, %s]"
     areaTooLarge: "Der Bereich darf nicht größer als 27000 Blöcke sein."
-    areaStatisticsMsg: "Die Gesamtgröße dieses Bereichs beträgt %s Blöcke mit %s Kisten."
+    areaStatisticsMsg:
+      start: "In diesem Bereich, der insgesamt aus %s Blöcken besteht,"
+      chestCount: "gibt es %s Truhe(n),"
+      barrelCount: " %s Fass(Fässer),"
+      furnaceCount: " %s Ofen(Öfen),"
+      blastFurnaceCount: " %s Schmelzofen(Schmelzöfen),"
+      smokerCount: " %s Räucherofen(Räucheröfen),"
+      hopperCount: " %s Trichter,"
+      noContainer: "Es gibt keine Container in dem Bereich, der insgesamt aus %s Blöcken besteht."
   itemCmd:
     helpMsg: [
       "Hilfe für das Item-Menü des Item-Plugins:",

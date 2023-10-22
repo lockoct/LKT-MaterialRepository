@@ -1,8 +1,8 @@
 package com.github.lockoct.item.listener;
 
 import com.github.lockoct.entity.ShulkerBoxPlaceMenuData;
+import com.github.lockoct.item.menu.ShulkerBoxPlaceMenu;
 import com.github.lockoct.menu.BaseMenu;
-import com.github.lockoct.menu.ShulkerBoxPlaceMenu;
 import com.github.lockoct.menu.listener.BaseMenuListener;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;

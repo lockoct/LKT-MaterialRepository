@@ -7,17 +7,17 @@ pluginMsg:
   autoCollectComplete: "所有采集任务已执行完毕"
 areaListMenu:
   title: "区域管理菜单"
-  itemInfo: "区域内共有 %s 个箱子"
+  itemInfo: "区域内共有 %s 个容器"
   pageStatisticsInfo: "共 %s 块区域"
 areaManageMenu:
   title: "区域管理"
-  chestStatisticsInfo: "区域内共有 %s 个箱子"
+  containerStatisticsInfo: "区域内共有 %s 个容器"
   deleteSuccessful: "区域 %s 删除成功"
   btn:
     delete: "删除区域"
     enable: "已启用"
     disable: "已禁用"
-    reload: "重新识别区域内箱子"
+    reload: "重新识别区域内容器"
 itemListMenu:
   title: "物料选择菜单"
   itemInfo: "剩余 %s 个"
@@ -56,10 +56,17 @@ cmd:
       "物料插件区域管理菜单帮助：",
       "/mr area - 打开区域管理菜单"
     ]
-    updateComplete: "采集区域更新完成"
-    decreaseChest: "，减少了%s个箱子"
-    increaseChest: "，增加了%s个箱子"
-    identifyChestFailed: "采集区域重新识别箱子失败"
+    reloadMsg:
+      updateComplete: "采集区域更新完成"
+      decrease: "，减少了"
+      increase: "，增加了"
+      chestCount: "%s个箱子，"
+      barrelCount: "%s个木桶，"
+      furnaceCount: "%s个熔炉，"
+      blastFurnaceCount: "%s个高炉，"
+      smokerCount: "%s个烟熏炉，"
+      hopperCount: "%s个漏斗，"
+    identifyContainerFailed: "采集区域重新识别容器失败"
   markCmd:
     helpMsg: [
       "物料插件标记命令帮助：",
@@ -74,7 +81,7 @@ cmd:
       ]
     saveCmd:
       helpMsg: [
-        "介绍：保存标记区域，插件后续将从该区域中的箱子采集物品",
+        "介绍：保存标记区域，插件后续将从该区域中的容器采集物品",
         "命令：/mr mark save 区域名称"
       ]
       markPointsInDifferentWorld: "两个标记点不在同一维度，请重新标记"
@@ -90,7 +97,15 @@ cmd:
     alreadyInMarkMode: "已进入标记模式，请使用左右键分别选取两个点，两个点之间形成立方体为采集区域"
     selectPoint: "已选中第%s个标记点[%s, %s, %s]"
     areaTooLarge: "区域范围不能大于27000方块大小"
-    areaStatisticsMsg: "该区域总计%s方块大小，有箱子%s个"
+    areaStatisticsMsg:
+      start: "该区域总计%s方块大小，共有"
+      chestCount: "箱子%s个，"
+      barrelCount: "木桶%s个，"
+      furnaceCount: "熔炉%s个，"
+      blastFurnaceCount: "高炉%s个，"
+      smokerCount: "烟熏炉%s个，"
+      hopperCount: "漏斗%s个，"
+      noContainer: "该区域总计%s方块大小，未发现有容器"
   itemCmd:
     helpMsg: [
       "物料插件物料菜单帮助：",

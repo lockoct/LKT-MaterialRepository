@@ -7,17 +7,17 @@ pluginMsg:
   autoCollectComplete: "모든 수집 작업이 완료되었습니다."
 areaListMenu:
   title: "지역 관리 메뉴"
-  itemInfo: "지역 안에 %s개 상자가 있습니다"
+  itemInfo: "영역 내에 총 %s개의 컨테이너가 있습니다"
   pageStatisticsInfo: "총 %s개 지역"
 areaManageMenu:
   title: "지역 관리"
-  chestStatisticsInfo: "지역 안에 %s개 상자가 있습니다"
+  containerStatisticsInfo: "영역 내에 총 %s개의 컨테이너가 있습니다"
   deleteSuccessful: "지역 %s 삭제 성공"
   btn:
     delete: "지역 삭제"
     enable: "활성화됨"
     disable: "비활성화됨"
-    reload: "지역 내 상자 재인식"
+    reload: "컨테이너 재인식"
 itemListMenu:
   title: "아이템 선택 메뉴"
   itemInfo: "남은 개수: %s개"
@@ -56,10 +56,17 @@ cmd:
       "아이템 플러그인 지역 관리 메뉴 도움말:",
       "/mr area - 지역 관리 메뉴 열기"
     ]
-    updateComplete: "수집 지역 업데이트 완료"
-    decreaseChest: ", 상자 %s개 제거됨"
-    increaseChest: ", 상자 %s개 추가됨"
-    identifyChestFailed: "수집 지역 내 상자 재인식 실패"
+    reloadMsg:
+      updateComplete: "수집 영역 업데이트 완료"
+      decrease: " 감소함"
+      increase: " 증가함"
+      chestCount: " %s개의 상자,"
+      barrelCount: " %s개의 나무통,"
+      furnaceCount: " %s개의 가마솥,"
+      blastFurnaceCount: " %s개의 높은 가마솥,"
+      smokerCount: " %s개의 연기로,"
+      hopperCount: " %s개의 깔때기,"
+    identifyContainerFailed: "수집 영역 컨테이너 재인식 실패"
   markCmd:
     helpMsg: [
       "아이템 플러그인 표시 명령어 도움말:",
@@ -74,7 +81,7 @@ cmd:
       ]
     saveCmd:
       helpMsg: [
-        "설명: 표시된 지역을 저장합니다. 이후 플러그인은 해당 지역의 상자에서 아이템을 수집합니다",
+        "설명 : 표시 구역 저장, 이후 이 플러그인은 컨테이너에서 물건을 수집합니다",
         "명령어: /mr mark save 지역이름"
       ]
       markPointsInDifferentWorld: "두 표시 지점이 동일한 차원에 없습니다. 다시 표시하세요"
@@ -90,7 +97,15 @@ cmd:
     alreadyInMarkMode: "이미 표시 모드에 진입했습니다. 좌클릭 및 우클릭을 사용하여 두 지점을 선택하여 수집 지역의 큐브를 형성하세요"
     selectPoint: "%s번째 표시 지점 선택됨[%s, %s, %s]"
     areaTooLarge: "지역 크기는 27000 블록을 초과할 수 없습니다"
-    areaStatisticsMsg: "지역 총 크기: %s 블록, 상자: %s개"
+    areaStatisticsMsg:
+      start: "총 %s개 블록으로 이루어진 구역에"
+      chestCount: " %s개의 상자,"
+      barrelCount: " %s개의 나무통,"
+      furnaceCount: " %s개의 가마솥,"
+      blastFurnaceCount: " %s개의 높은 가마솥,"
+      smokerCount: " %s개의 연기로,"
+      hopperCount: " %s개의 깔때기가 있습니다,"
+      noContainer: "총 %s개 블록으로 이루어진 구역에 컨테이너가 없습니다."
   itemCmd:
     helpMsg: [
       "아이템 플러그인 아이템 메뉴 도움말:",

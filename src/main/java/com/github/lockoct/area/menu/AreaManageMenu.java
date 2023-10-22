@@ -1,9 +1,10 @@
-package com.github.lockoct.menu;
+package com.github.lockoct.area.menu;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.AreaListMenuListener;
 import com.github.lockoct.area.task.ReloadAreaTask;
 import com.github.lockoct.entity.CollectArea;
+import com.github.lockoct.menu.BaseMenu;
 import com.github.lockoct.utils.DatabaseUtil;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.ChatColor;
@@ -25,14 +26,14 @@ public class AreaManageMenu extends BaseMenu {
 
         // 取出上下文信息
         CollectArea areaInfo = (CollectArea) menuContext.get("areaInfo");
-        int areaChestCount = (int) menuContext.get("areaChestCount");
+        int areaContainerCount = (int) menuContext.get("areaContainerCount");
 
         // 设置告示信息
         ItemStack is = setOptItem(Material.OAK_SIGN, areaInfo.getName(), 13, null);
         ItemMeta im = is.getItemMeta();
         assert im != null;
         ArrayList<String> loreList = new ArrayList<>();
-        loreList.add(I18nUtil.getText(Main.plugin, player, "areaManageMenu.chestStatisticsInfo", areaChestCount));
+        loreList.add(I18nUtil.getText(Main.plugin, player, "areaManageMenu.containerStatisticsInfo", areaContainerCount));
         im.setLore(loreList);
         is.setItemMeta(im);
         getInventory().setItem(13, is);

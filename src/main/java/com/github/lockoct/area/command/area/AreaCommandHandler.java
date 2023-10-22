@@ -2,8 +2,8 @@ package com.github.lockoct.area.command.area;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.AreaListMenuListener;
+import com.github.lockoct.area.menu.AreaListMenu;
 import com.github.lockoct.command.BaseCommandHandler;
-import com.github.lockoct.menu.AreaListMenu;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

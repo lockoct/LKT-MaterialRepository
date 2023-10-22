@@ -5,7 +5,7 @@ import com.github.lockoct.area.listener.MarkListener;
 import com.github.lockoct.area.task.SaveTask;
 import com.github.lockoct.command.BaseCommandHandler;
 import com.github.lockoct.entity.CollectArea;
-import com.github.lockoct.entity.CollectAreaChest;
+import com.github.lockoct.entity.CollectAreaContainer;
 import com.github.lockoct.entity.MarkData;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.ChatColor;
@@ -73,19 +73,20 @@ public class SaveSubCommandHandler extends BaseCommandHandler {
             ca.setCreateUser(playerId);
             ca.setUpdateUser(playerId);
 
-            // 将区域内箱子信息转换为java bean
-            ArrayList<Location> chestLocationList = data.getChestLocation();
-            ArrayList<CollectAreaChest> cacList = new ArrayList<>();
-            chestLocationList.forEach(e -> {
-                CollectAreaChest cac = new CollectAreaChest();
+            // 将区域内容器信息转换为java bean
+            ArrayList<CollectAreaContainer> cacList = new ArrayList<>();
+            data.getContainerLocation().forEach((k, v) -> v.forEach(e -> {
+                CollectAreaContainer cac = new CollectAreaContainer();
+                cac.setType(k.toString());
                 cac.setX(e.getBlockX());
                 cac.setY(e.getBlockY());
                 cac.setZ(e.getBlockZ());
                 cac.setCreateUser(playerId);
                 cac.setUpdateUser(playerId);
                 cacList.add(cac);
-            });
-            ca.setChests(cacList);
+            }));
+
+            ca.setContainers(cacList);
 
             // 防止重复建立保存线程任务
             if (data.getSaveTaskId() > 0) {

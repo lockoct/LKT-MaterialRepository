@@ -30,7 +30,7 @@ public class SaveTask extends BukkitRunnable {
         NutTxDao tx = new NutTxDao(dao);
         try {
             tx.beginRC();
-            CollectArea caTmp = tx.insertWith(ca, "chests");
+            CollectArea caTmp = tx.insertWith(ca, "containers");
             if (caTmp != null) {
                 player.sendMessage(ChatColor.GREEN + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.saveCmd.saveSuccessful"));
             }

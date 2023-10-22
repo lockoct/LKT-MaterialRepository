@@ -3,6 +3,8 @@ package com.github.lockoct.area.task;
 import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.MarkListener;
 import com.github.lockoct.entity.MarkData;
+import com.github.lockoct.handler.ContainerHandler;
+import com.github.lockoct.handler.ContainerHandlerFactory;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,6 +12,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class CalcAreaTask extends BukkitRunnable {
     private final Player player;
@@ -29,12 +34,12 @@ public class CalcAreaTask extends BukkitRunnable {
             player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.areaTooLarge"));
             return;
         }
-        int chestCount = 0;
         int key = player.hashCode();
         MarkData data = MarkListener.getMarkModePlayers().get(key);
-        // 统计选区内箱子前，先要把上一次选区的箱子记录清掉
-        // 避免同一个箱子添加多次
-        data.getChestLocation().clear();
+        Map<Material, ArrayList<Location>> locationMap = data.getContainerLocation();
+        // 统计选区内箱子前，先要把上一次选区的容器记录清掉
+        // 避免相同位置的容器添加多次
+        locationMap.clear();
 
         int maxY = Math.max(point1.getBlockY(), point2.getBlockY());
         int minY = Math.min(point1.getBlockY(), point2.getBlockY());
@@ -49,13 +54,29 @@ public class CalcAreaTask extends BukkitRunnable {
                         return;
                     }
                     Block areaBlock = new Location(player.getWorld(), x, y, z).getBlock();
-                    if (areaBlock.getType() == Material.CHEST) {
-                        data.getChestLocation().add(areaBlock.getLocation());
-                        chestCount++;
+                    Material blockType = areaBlock.getType();
+                    if (ContainerHandlerFactory.getSupportedContainers().contains(blockType)) {
+                        // 如果当前map没有对应容器的数组，就新建数组
+                        // 如果有就直接返回数组
+                        // 并将该容器位置添加到数组中
+                        locationMap.computeIfAbsent(blockType, k -> new ArrayList<>()).add(areaBlock.getLocation());
                     }
                 }
             }
         }
-        player.sendMessage(ChatColor.LIGHT_PURPLE + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.areaStatisticsMsg", area, chestCount));
+
+        if (locationMap.keySet().size() == 0) {
+            player.sendMessage(ChatColor.LIGHT_PURPLE + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.areaStatisticsMsg.noContainer", area));
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder(ChatColor.LIGHT_PURPLE + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.areaStatisticsMsg.start", area));
+        for (Material type : locationMap.keySet()) {
+            ContainerHandler handler = ContainerHandlerFactory.getHandler(type);
+            handler.getMarkStatisticsMsg(locationMap, sb, player);
+        }
+
+        sb.deleteCharAt(sb.length() - 1);
+        player.sendMessage(sb.toString());
     }
 }

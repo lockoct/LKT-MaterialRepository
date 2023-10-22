@@ -1,8 +1,9 @@
-package com.github.lockoct.menu;
+package com.github.lockoct.item.menu;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.item.listener.KeyboardMenuListener;
+import com.github.lockoct.menu.PageableMenu;
 import com.github.lockoct.utils.DatabaseUtil;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Material;

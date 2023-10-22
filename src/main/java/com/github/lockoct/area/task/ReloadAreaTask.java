@@ -2,7 +2,9 @@ package com.github.lockoct.area.task;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.entity.CollectArea;
-import com.github.lockoct.entity.CollectAreaChest;
+import com.github.lockoct.entity.CollectAreaContainer;
+import com.github.lockoct.handler.ContainerHandler;
+import com.github.lockoct.handler.ContainerHandlerFactory;
 import com.github.lockoct.utils.DatabaseUtil;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Bukkit;
@@ -16,8 +18,8 @@ import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutTxDao;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReloadAreaTask extends BukkitRunnable {
     private final CollectArea area;
@@ -36,11 +38,11 @@ public class ReloadAreaTask extends BukkitRunnable {
         }
         NutTxDao tx = new NutTxDao(dao);
 
-        ArrayList<String> existChestIdList = new ArrayList<>();
-        int newChestCount = 0;
+        ArrayList<String> existContainerIdList = new ArrayList<>();
+        HashMap<Material, ArrayList<CollectAreaContainer>> newContainerMap = new HashMap<>();
         String playerId = player.getUniqueId().toString();
 
-        dao.fetchLinks(area, "chests");
+        dao.fetchLinks(area, "containers");
 
         try {
             tx.beginRC();
@@ -56,46 +58,72 @@ public class ReloadAreaTask extends BukkitRunnable {
                     int minX = Math.min(area.getX1(), area.getX2());
                     for (int x = minX; x <= maxX; x++) {
                         Block areaBlock = new Location(Bukkit.getWorld(area.getWorld()), x, y, z).getBlock();
-                        if (areaBlock.getType() == Material.CHEST) {
-                            List<CollectAreaChest> tmpList = area.getChests().stream().filter(e -> e.getX() == areaBlock.getX() && e.getY() == areaBlock.getY() && e.getZ() == areaBlock.getZ()).toList();
-                            CollectAreaChest chest;
-                            if (tmpList.isEmpty()) {
-                                newChestCount++;
-                                chest = new CollectAreaChest();
-                                chest.setAreaId(area.getId());
-                                chest.setX(areaBlock.getX());
-                                chest.setY(areaBlock.getY());
-                                chest.setZ(areaBlock.getZ());
-                                chest.setCreateUser(playerId);
-                                chest.setUpdateUser(playerId);
-                                tx.insert(chest);
+                        Material blockType = areaBlock.getType();
+                        if (ContainerHandlerFactory.getSupportedContainers().contains(blockType)) {
+                            Optional<CollectAreaContainer> res = area.getContainers().stream().filter(e -> e.getX() == areaBlock.getX() && e.getY() == areaBlock.getY() && e.getZ() == areaBlock.getZ() && e.getType().equals(areaBlock.getType().toString())).findFirst();
+                            CollectAreaContainer container;
+                            if (res.isEmpty()) {
+                                container = new CollectAreaContainer();
+                                container.setType(blockType.toString());
+                                container.setAreaId(area.getId());
+                                container.setX(areaBlock.getX());
+                                container.setY(areaBlock.getY());
+                                container.setZ(areaBlock.getZ());
+                                container.setCreateUser(playerId);
+                                container.setUpdateUser(playerId);
+                                tx.insert(container);
+
+                                // 记录新增加的容器
+                                newContainerMap.computeIfAbsent(blockType, k -> new ArrayList<>()).add(container);
                             } else {
-                                chest = tmpList.get(0);
+                                container = res.get();
                             }
-                            existChestIdList.add(chest.getId());
+                            existContainerIdList.add(container.getId());
                         }
                     }
                 }
             }
             Cnd cond = Cnd.where("area_id", "=", area.getId());
-            if (existChestIdList.size() > 0) {
-                cond.and("id", "NOT IN", existChestIdList);
+            if (existContainerIdList.size() > 0) {
+                cond.and("id", "NOT IN", existContainerIdList);
             }
-            int res = tx.clear(CollectAreaChest.class, cond);
+            int res = tx.clear(CollectAreaContainer.class, cond);
             tx.commit();
 
-            String msg = I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.updateComplete");
+            StringBuilder msg = new StringBuilder(I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.reloadMsg.updateComplete"));
+            // 输出减少的容器
             if (res > 0) {
-                msg = msg.concat(I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.decreaseChest", res));
+                msg.append(I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.reloadMsg.decrease"));
+                List<CollectAreaContainer> containerList = area.getContainers();
+                // 找出减少的容器
+                containerList.removeIf(e -> existContainerIdList.contains(e.getId()));
+                // 按容器类型分组
+                Map<String, List<CollectAreaContainer>> oldContainerMap = containerList.stream().collect(Collectors.groupingBy(CollectAreaContainer::getType));
+                // 遍历map拼接文本
+                oldContainerMap.forEach((k, v) -> {
+                    ContainerHandler handler = ContainerHandlerFactory.getHandler(Material.getMaterial(k));
+                    assert handler != null;
+                    handler.getReloadStatisticsMsg(v.size(), msg, player);
+                });
+                // 去掉尾部多余的逗号
+                msg.deleteCharAt(msg.length() - 1);
             }
-            if (newChestCount > 0) {
-                msg = msg.concat(I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.increaseChest", newChestCount));
+
+            // 输出增加的容器
+            if (!newContainerMap.isEmpty()) {
+                msg.append(I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.reloadMsg.increase"));
+                newContainerMap.forEach((k, v) -> {
+                    ContainerHandler handler = ContainerHandlerFactory.getHandler(k);
+                    handler.getReloadStatisticsMsg(v.size(), msg, player);
+                });
+                // 去掉尾部多余的逗号
+                msg.deleteCharAt(msg.length() - 1);
             }
-            player.sendMessage(ChatColor.GREEN + msg);
+            player.sendMessage(ChatColor.GREEN + msg.toString());
         } catch (Throwable e) {
             e.printStackTrace();
             tx.rollback();
-            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.identifyChestFailed"));
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.areaCmd.identifyContainerFailed"));
         } finally {
             tx.close();
         }

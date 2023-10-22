@@ -1,6 +1,6 @@
 package com.github.lockoct.area.listener;
 
-import com.github.lockoct.menu.AreaListMenu;
+import com.github.lockoct.area.menu.AreaListMenu;
 import com.github.lockoct.menu.BaseMenu;
 import com.github.lockoct.menu.listener.BaseMenuListener;
 import org.bukkit.event.EventHandler;

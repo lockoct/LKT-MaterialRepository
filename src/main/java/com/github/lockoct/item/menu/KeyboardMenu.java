@@ -1,10 +1,11 @@
-package com.github.lockoct.menu;
+package com.github.lockoct.item.menu;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.item.listener.ItemListMenuListener;
 import com.github.lockoct.item.listener.ShulkerBoxPlaceMenuListener;
 import com.github.lockoct.item.task.SendItemTask;
+import com.github.lockoct.menu.BaseMenu;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
