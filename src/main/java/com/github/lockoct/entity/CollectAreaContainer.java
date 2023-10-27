@@ -17,7 +17,7 @@ public class CollectAreaContainer extends BaseEntity {
 
     @Column
     @Comment("容器类型")
-    @ColDefine(type = ColType.VARCHAR, width = 45, notNull = true)
+    @ColDefine(type = ColType.VARCHAR, width = 45)
     private String type;
 
     @Column
