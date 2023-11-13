@@ -1,6 +1,8 @@
-package com.github.lockoct.handler;
+package com.github.lockoct.handler.container;
 
 import com.github.lockoct.Main;
+import com.github.lockoct.handler.item.ItemHandler;
+import com.github.lockoct.handler.item.ItemHandlerFactory;
 import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,11 +11,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.nutz.dao.Dao;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 public class BarrelHandler implements ContainerHandler {
     @Override
@@ -27,24 +27,16 @@ public class BarrelHandler implements ContainerHandler {
     }
 
     @Override
-    public void collectItem(BiConsumer<Dao, ItemStack> itemsToDB, Dao dao, Block block) {
+    public void collectItem(Block block) {
         Barrel barrel = (Barrel) block.getState();
         Inventory inv = barrel.getInventory();
         for (int i = 0; i < inv.getSize(); i++) {
             ItemStack is = inv.getItem(i);
             if (is != null) {
-                // 处理可堆叠物品
-                if (is.getMaxStackSize() > 1) {
-                    itemsToDB.accept(dao, is);
-                    // 新增或更新后去除原本箱子中的物品
+                ItemHandler handler = ItemHandlerFactory.getHandler(is);
+                if (handler.execute()) {
+                    // 新增或更新成功后去除原本箱子中的物品
                     inv.clear(i);
-                } else {
-                    // 不可堆叠物品目前仅支持不死图腾
-                    if (is.getType() == Material.TOTEM_OF_UNDYING) {
-                        itemsToDB.accept(dao, is);
-                        // 新增或更新后去除原本箱子中的物品
-                        inv.clear(i);
-                    }
                 }
             }
         }

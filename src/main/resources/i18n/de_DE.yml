@@ -22,6 +22,9 @@ itemListMenu:
   title: "Menü zur Auswahl von Gegenständen"
   itemInfo: "%s übrig"
   pageStatisticsInfo: "Insgesamt %s Arten von Gegenständen"
+unstackItemListMenu:
+  title: "Gegenstandsabholmenü"
+  pageStatisticsInfo: "%s Gegenstände insgesamt"
 keyboardMenu:
   title: "Mengenauswahl"
   calcResPrefix: "Menge der ausgewählten Gegenstände: "

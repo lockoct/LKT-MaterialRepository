@@ -22,6 +22,9 @@ itemListMenu:
   title: "Menu de sélection des objets"
   itemInfo: "%s restants"
   pageStatisticsInfo: "Total de %s types d'objets"
+unstackItemListMenu:
+  title: "Menu de récupération d'objets"
+  pageStatisticsInfo: "Total de %s objets"
 keyboardMenu:
   title: "Sélection de la quantité"
   calcResPrefix: "Quantité d'objets à prendre : "

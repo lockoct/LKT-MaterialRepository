@@ -26,7 +26,7 @@ public class KeyboardMenu extends BaseMenu {
     private int mode = 1;
     private int calcResult = 0;
 
-    public KeyboardMenu(String title, Player player, HashMap<String, Object> menuContext) {
+    public KeyboardMenu(String title, HashMap<String, Object> menuContext, Player player) {
         super(54, title, menuContext, player, Main.plugin);
         setKeyboard();
         setModeItem();
@@ -177,7 +177,7 @@ public class KeyboardMenu extends BaseMenu {
                 close();
             } else {
                 getMenuContext().put("boxCount", calcResult);
-                ShulkerBoxPlaceMenu menu = new ShulkerBoxPlaceMenu(I18nUtil.getText(Main.plugin, player, "shulkerBoxPlaceMenu.title"), player, getMenuContext());
+                ShulkerBoxPlaceMenu menu = new ShulkerBoxPlaceMenu(I18nUtil.getText(Main.plugin, player, "shulkerBoxPlaceMenu.title"), getMenuContext(), player);
                 menu.open(new ShulkerBoxPlaceMenuListener(menu));
             }
         }

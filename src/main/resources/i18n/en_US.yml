@@ -22,6 +22,9 @@ itemListMenu:
   title: "Item Selection Menu"
   itemInfo: "%s remaining"
   pageStatisticsInfo: "Total %s item types"
+unstackItemListMenu:
+  title: "Item Pickup Menu"
+  pageStatisticsInfo: "Total %s items"
 keyboardMenu:
   title: "Quantity Selection"
   calcResPrefix: "Number of items to take: "

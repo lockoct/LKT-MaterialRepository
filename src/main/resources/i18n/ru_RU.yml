@@ -22,6 +22,9 @@ itemListMenu:
   title: "Меню выбора предметов"
   itemInfo: "%s осталось"
   pageStatisticsInfo: "Всего %s типов предметов"
+unstackItemListMenu:
+  title: "Меню получения предметов"
+  pageStatisticsInfo: "Всего предметов: %s"
 keyboardMenu:
   title: "Выбор количества"
   calcResPrefix: "Количество выбранных предметов: "

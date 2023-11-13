@@ -3,8 +3,11 @@ package com.github.lockoct.item.task;
 import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.entity.ShulkerBoxPlaceMenuData;
+import com.github.lockoct.nbtapi.NBT;
+import com.github.lockoct.nbtapi.iface.ReadWriteNBT;
 import com.github.lockoct.utils.DatabaseUtil;
 import com.github.lockoct.utils.I18nUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
@@ -76,13 +79,26 @@ public class SendBoxTask extends BukkitRunnable {
                         assert bsm != null;
                         ShulkerBox box = (ShulkerBox) bsm.getBlockState();
                         Inventory boxInv = box.getInventory();
-                        Material m = Material.getMaterial(item.getType());
-                        assert m != null;
-                        for (int j = 0; j < boxInv.getSize(); j++) {
+
+                        // 对有nbt标签的物品进行处理
+                        if (StringUtils.isNotBlank(item.getNbtMd5())) {
+                            ReadWriteNBT nbt = NBT.parseNBT(item.getNbt());
+                            ItemStack tmpIs = NBT.itemStackFromNBT(nbt);
+                            assert tmpIs != null;
+                            for (int j = 0; j < boxInv.getSize(); j++) {
+                                tmpIs.setAmount(tmpIs.getMaxStackSize());
+                                boxInv.addItem(tmpIs);
+                            }
+                        } else {
+                            Material m = Material.getMaterial(item.getType());
+                            assert m != null;
                             ItemStack tmpIs = new ItemStack(m);
-                            tmpIs.setAmount(tmpIs.getMaxStackSize());
-                            boxInv.addItem(tmpIs);
+                            for (int j = 0; j < boxInv.getSize(); j++) {
+                                tmpIs.setAmount(m.getMaxStackSize());
+                                boxInv.addItem(tmpIs);
+                            }
                         }
+
                         bsm.setBlockState(box);
                         is.setItemMeta(bsm);
                     }

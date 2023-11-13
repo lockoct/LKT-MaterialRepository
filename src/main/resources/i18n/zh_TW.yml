@@ -22,6 +22,9 @@ itemListMenu:
   title: "物料選擇菜單"
   itemInfo: "剩餘 %s 個"
   pageStatisticsInfo: "共 %s 類物品"
+unstackItemListMenu:
+  title: "物品領取菜單"
+  pageStatisticsInfo: "共 %s 個物品"
 keyboardMenu:
   title: "數量選擇"
   calcResPrefix: "拿取物品的數量為："

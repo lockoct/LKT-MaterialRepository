@@ -1,4 +1,4 @@
-package com.github.lockoct.handler;
+package com.github.lockoct.handler.container;
 
 import org.bukkit.Material;
 

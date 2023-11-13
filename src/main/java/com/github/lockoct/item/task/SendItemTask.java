@@ -2,8 +2,11 @@ package com.github.lockoct.item.task;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
+import com.github.lockoct.nbtapi.NBT;
+import com.github.lockoct.nbtapi.iface.ReadWriteNBT;
 import com.github.lockoct.utils.DatabaseUtil;
 import com.github.lockoct.utils.I18nUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -83,16 +86,25 @@ public class SendItemTask extends BukkitRunnable {
         int res = dao.update(Item.class, Chain.makeSpecial("amount", "-" + amount), Cnd.where("amount", ">=", amount).and("id", "=", item.getId()));
         if (res > 0) {
             // 给玩家背包发放物品
-            for (int i = 0; i < needSlot; i++) {
+            ItemStack sendItem;
+            // 对有nbt标签的物品进行处理
+            if (StringUtils.isNotBlank(item.getNbtMd5())) {
+                ReadWriteNBT nbt = NBT.parseNBT(item.getNbt());
+                sendItem = NBT.itemStackFromNBT(nbt);
+            } else {
                 Material m = Material.getMaterial(item.getType());
                 assert m != null;
-                ItemStack sendItem = new ItemStack(m);
+                sendItem = new ItemStack(m);
+            }
+
+            // 开始发放
+            assert sendItem != null;
+            for (int i = 0; i < needSlot; i++) {
                 if (i + 1 <= groupCount) {
-                    sendItem.setAmount(m.getMaxStackSize());
+                    sendItem.setAmount(sendItem.getMaxStackSize());
                 } else {
                     sendItem.setAmount(remain);
                 }
-
                 playerInv.setItem(emptySlotPos.get(i), sendItem);
             }
             if (moreThanRepoAmount) {

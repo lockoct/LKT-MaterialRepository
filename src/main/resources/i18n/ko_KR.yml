@@ -22,6 +22,9 @@ itemListMenu:
   title: "아이템 선택 메뉴"
   itemInfo: "남은 개수: %s개"
   pageStatisticsInfo: "총 %s개 아이템 종류"
+unstackItemListMenu:
+  title: "아이템 수령 메뉴"
+  pageStatisticsInfo: "총 %s개의 아이템"
 keyboardMenu:
   title: "수량 선택"
   calcResPrefix: "아이템 수량: "

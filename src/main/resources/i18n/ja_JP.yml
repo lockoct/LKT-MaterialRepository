@@ -22,6 +22,9 @@ itemListMenu:
   title: "アイテム選択メニュー"
   itemInfo: "%s個残っています"
   pageStatisticsInfo: "合計%s種類のアイテム"
+unstackItemListMenu:
+  title: "アイテム受け取りメニュー"
+  pageStatisticsInfo: "合計%s個のアイテム"
 keyboardMenu:
   title: "数量選択"
   calcResPrefix: "取得するアイテムの数量："

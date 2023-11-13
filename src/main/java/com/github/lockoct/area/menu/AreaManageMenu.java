@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class AreaManageMenu extends BaseMenu {
     private boolean enabled;
 
-    public AreaManageMenu(String title, Player player, HashMap<String, Object> menuContext) {
+    public AreaManageMenu(String title, HashMap<String, Object> menuContext, Player player) {
         super(54, title, menuContext, player, Main.plugin);
 
         // 取出上下文信息
