@@ -104,7 +104,7 @@ public class AreaListMenu extends PageableMenu {
             // 列表菜单当前页码
             context.put("fromPage", getCurrentPage());
 
-            AreaManageMenu menu = new AreaManageMenu(I18nUtil.getText(Main.plugin, getPlayer(), "areaManageMenu.title"), getPlayer(), getMenuContext());
+            AreaManageMenu menu = new AreaManageMenu(I18nUtil.getText(Main.plugin, getPlayer(), "areaManageMenu.title"), getMenuContext(), getPlayer());
             close();
             menu.open(new AreaManageMenuListener(menu));
         }

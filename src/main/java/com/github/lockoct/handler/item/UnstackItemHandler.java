@@ -1,8 +1,10 @@
 package com.github.lockoct.handler.item;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.entity.UnstackItem;
 import com.github.lockoct.nbtapi.NBT;
+import com.github.lockoct.nbtapi.NBTItem;
 import com.github.lockoct.nbtapi.iface.ReadWriteNBT;
 import com.github.lockoct.utils.DatabaseUtil;
 import org.nutz.dao.Cnd;
@@ -14,6 +16,11 @@ import java.util.List;
 public class UnstackItemHandler extends ItemHandler {
     @Override
     public boolean execute() {
+        // 判断当前物品是否在物品黑名单中
+        if (Main.excludedItems.contains(itemStack.getType())) {
+            return false;
+        }
+
         Dao dao = DatabaseUtil.getDao();
         // 先查找item表有没有该物品的入口
         List<Item> tmpList = dao.query(Item.class, Cnd.where("type", "=", itemStack.getType()));
@@ -28,8 +35,17 @@ public class UnstackItemHandler extends ItemHandler {
 
         UnstackItem unstackItem = new UnstackItem();
 
-        // 设置nbt标签
+        // 获取物品nbt标签
         ReadWriteNBT nbt = NBT.itemStackToNBT(itemStack);
+        NBTItem nbtItem = new NBTItem(itemStack);
+
+        // 判断当前物品是否有禁止收集nbt属性
+        boolean flag = nbtItem.getBoolean("NoCollect");
+        if (flag) {
+            return false;
+        }
+
+        // 实体对象设置nbt标签
         unstackItem.setNbt(nbt.toString());
 
         NutTxDao tx = new NutTxDao(dao);

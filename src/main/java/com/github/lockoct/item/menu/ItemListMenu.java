@@ -17,6 +17,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.pager.Pager;
 
@@ -43,7 +44,7 @@ public class ItemListMenu extends PageableMenu {
                 @Override
                 public void run() {
                     Pager pager = dao.createPager(page, PAGE_SIZE);
-                    items = dao.query(Item.class, null, pager);
+                    items = dao.query(Item.class, Cnd.orderBy().asc("type"), pager);
                     pager.setRecordCount(dao.count(Item.class));
                     setTotalPage(pager.getPageCount());
                     setTotal(pager.getRecordCount());

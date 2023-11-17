@@ -9,6 +9,7 @@ import com.github.lockoct.utils.DatabaseUtil;
 import com.github.lockoct.utils.I18nUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.nutz.dao.Dao;
@@ -19,10 +20,12 @@ import org.quartz.CronExpression;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Main extends BasePlugin {
     public static Main plugin;
-    // private static BasePlugin corePlugin;
+    public static final ArrayList<Material> excludedItems = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -56,6 +59,9 @@ public final class Main extends BasePlugin {
 
         // 数据库表初始化
         initTables();
+
+        // 加载黑名单物品列表
+        loadExcludedItems();
 
         // 添加定时任务
         FileConfiguration config = getConfig();
@@ -93,7 +99,15 @@ public final class Main extends BasePlugin {
         }
     }
 
-    // public static BasePlugin getCorePlugin() {
-    //     return corePlugin;
-    // }
+    public void loadExcludedItems() {
+        FileConfiguration config = getConfig();
+        List<String> excludedItems = config.getStringList("excludedItems");
+
+        excludedItems.forEach(e -> {
+            Material m = Material.matchMaterial(e);
+            if (m != null) {
+                Main.excludedItems.add(m);
+            }
+        });
+    }
 }

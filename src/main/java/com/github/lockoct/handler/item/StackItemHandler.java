@@ -1,5 +1,6 @@
 package com.github.lockoct.handler.item;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.nbtapi.NBT;
 import com.github.lockoct.nbtapi.NBTItem;
@@ -17,6 +18,11 @@ import java.util.List;
 public class StackItemHandler extends ItemHandler {
     @Override
     public boolean execute() {
+        // 判断当前物品是否在物品黑名单中
+        if (Main.excludedItems.contains(itemStack.getType())) {
+            return false;
+        }
+
         Dao dao = DatabaseUtil.getDao();
         Cnd cnd = Cnd.where("type", "=", itemStack.getType());
 
@@ -27,6 +33,12 @@ public class StackItemHandler extends ItemHandler {
         String nbtMd5 = null;
         if (nbtItem.hasNBTData()) {
             nbtStr = nbt.toString();
+
+            // 判断当前物品是否有禁止收集nbt属性
+            boolean flag = nbtItem.getBoolean("NoCollect");
+            if (flag) {
+                return false;
+            }
 
             // 获取nbt字符串md5加密值
             try {
