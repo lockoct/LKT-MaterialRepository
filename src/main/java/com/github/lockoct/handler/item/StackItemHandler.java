@@ -44,7 +44,9 @@ public class StackItemHandler extends ItemHandler {
             try {
                 MessageDigest digest = MessageDigest.getInstance("MD5");
                 // 计算哈希值
-                byte[] hash = digest.digest(nbtStr.getBytes(StandardCharsets.UTF_8));
+                // md5加密必须用这个字符串，只包含tag里的信息
+                String nbtItemStr = nbtItem.toString();
+                byte[] hash = digest.digest(nbtItemStr.getBytes(StandardCharsets.UTF_8));
                 // 将哈希值转换为十六进制字符串
                 StringBuilder hexString = new StringBuilder();
                 for (byte b : hash) {
@@ -56,6 +58,8 @@ public class StackItemHandler extends ItemHandler {
                 e.printStackTrace();
                 return false;
             }
+        } else {
+            cnd.and("nbt_md5", "is", null);
         }
 
         List<Item> tmpList = dao.query(Item.class, cnd);
