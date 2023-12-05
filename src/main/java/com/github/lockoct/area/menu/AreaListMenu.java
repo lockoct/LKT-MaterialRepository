@@ -1,10 +1,12 @@
-package com.github.lockoct.menu;
+package com.github.lockoct.area.menu;
 
 import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.AreaManageMenuListener;
 import com.github.lockoct.entity.CollectArea;
-import com.github.lockoct.entity.CollectAreaChest;
+import com.github.lockoct.entity.CollectAreaContainer;
+import com.github.lockoct.menu.PageableMenu;
 import com.github.lockoct.utils.DatabaseUtil;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -21,7 +23,7 @@ import java.util.List;
 
 public class AreaListMenu extends PageableMenu {
     private List<CollectArea> areas;
-    private final List<Integer> chestCountList = new ArrayList<>();
+    private final List<Integer> containerCountList = new ArrayList<>();
 
     public AreaListMenu(String title, Player player) {
         super(title, new HashMap<>(), player, Main.plugin);
@@ -46,8 +48,6 @@ public class AreaListMenu extends PageableMenu {
                     setTotal(pager.getRecordCount());
                     // 设置分页
                     setPageElement();
-                    // 设置退出
-                    setOptItem(Material.DARK_OAK_DOOR, "退出", 48, "exit");
                     // 填充物品
                     for (int i = 0; i < PAGE_SIZE; i++) {
                         Inventory inv = getInventory();
@@ -57,10 +57,10 @@ public class AreaListMenu extends PageableMenu {
                             assert im != null;
                             im.setDisplayName(areas.get(i).getName());
                             // 区域内箱子数量填在附加信息中
-                            int chestCount = dao.count(CollectAreaChest.class, Cnd.where("area_id", "=", areas.get(i).getId()));
-                            chestCountList.add(i, chestCount);
+                            int containerCount = dao.count(CollectAreaContainer.class, Cnd.where("area_id", "=", areas.get(i).getId()));
+                            containerCountList.add(i, containerCount);
                             ArrayList<String> loreList = new ArrayList<>();
-                            loreList.add("区域内共有 " + chestCount + " 个箱子");
+                            loreList.add(I18nUtil.getText(Main.plugin, getPlayer(), "areaListMenu.itemInfo", containerCount));
                             im.setLore(loreList);
                             is.setItemMeta(im);
                             inv.setItem(i, is);
@@ -88,7 +88,7 @@ public class AreaListMenu extends PageableMenu {
         assert im != null;
         // 分页附加信息
         ArrayList<String> loreList = new ArrayList<>();
-        loreList.add("共 " + this.getTotal() + " 块区域");
+        loreList.add(I18nUtil.getText(Main.plugin, getPlayer(), "areaListMenu.pageStatisticsInfo", getTotal()));
         im.setLore(loreList);
         is.setItemMeta(im);
         inv.setItem(49, is);
@@ -96,16 +96,16 @@ public class AreaListMenu extends PageableMenu {
 
     public void toManageMenu(int index) {
         if (index < PAGE_SIZE) {
-            HashMap<String, Object> context = this.getMenuContext();
+            HashMap<String, Object> context = getMenuContext();
             // 区域信息
             context.put("areaInfo", areas.get(index));
             // 区域内箱子数量
-            context.put("areaChestCount", chestCountList.get(index));
+            context.put("areaContainerCount", containerCountList.get(index));
             // 列表菜单当前页码
             context.put("fromPage", getCurrentPage());
 
-            AreaManageMenu menu = new AreaManageMenu("区域管理", this.getPlayer(), this.getMenuContext());
-            this.close();
+            AreaManageMenu menu = new AreaManageMenu(I18nUtil.getText(Main.plugin, getPlayer(), "areaManageMenu.title"), getMenuContext(), getPlayer());
+            close();
             menu.open(new AreaManageMenuListener(menu));
         }
     }

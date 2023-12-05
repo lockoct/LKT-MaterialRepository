@@ -3,6 +3,7 @@ package com.github.lockoct.area.listener;
 import com.github.lockoct.Main;
 import com.github.lockoct.area.task.CalcAreaTask;
 import com.github.lockoct.entity.MarkData;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -44,7 +45,7 @@ public class MarkListener implements Listener {
                     data.setMarkPoint1(block.getLocation());
                 }
 
-                player.sendMessage(ChatColor.LIGHT_PURPLE + "已选中第" + positionNum + "个标记点[" + block.getX() + ", " + block.getY() + ", " + block.getZ() + "]");
+                player.sendMessage(ChatColor.LIGHT_PURPLE + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.selectPoint", positionNum, block.getX(), block.getY(), block.getZ()));
 
                 // 选中两个标记点后计算范围大小，查找范围中的箱子数量
                 Location point1 = data.getMarkPoint1();
@@ -86,7 +87,7 @@ public class MarkListener implements Listener {
             markModePlayers.remove(key);
             return true;
         } else {
-            player.sendMessage(ChatColor.RED + "未进入标记模式，请先使用 /mr mark start 进入标记模式标记采集区域");
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.notInMarkMode"));
             return false;
         }
     }

@@ -5,6 +5,7 @@ import com.github.lockoct.area.command.mark.MarkCommandHandler;
 import com.github.lockoct.command.BaseCommandRouter;
 import com.github.lockoct.item.command.ItemCommandHandler;
 import com.github.lockoct.utils.ColorLogUtil;
+import com.github.lockoct.utils.I18nUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,17 +18,6 @@ import java.util.List;
 
 public class CommandRouter extends BaseCommandRouter {
 
-    public CommandRouter() {
-        // 先清除后添加
-        helpStrList.clear();
-        // 添加帮助信息
-        helpStrList.add("物料插件命令帮助：");
-        helpStrList.add("/mr mark - 标记采集区域命令");
-        helpStrList.add("/mr item - 打开物料菜单");
-        helpStrList.add("/mr area - 打开区域管理菜单");
-        helpStrList.add("选择输入任意子命令，可查看详细用法。");
-    }
-
     @Override
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, @Nonnull String[] args) {
         if (sender instanceof Player player) {
@@ -37,13 +27,13 @@ public class CommandRouter extends BaseCommandRouter {
                     case "mark" -> MarkCommandHandler.getInstance().execute(sender, subCmdArgs);
                     case "item" -> ItemCommandHandler.getInstance().execute(sender, subCmdArgs);
                     case "area" -> AreaCommandHandler.getInstance().execute(sender, subCmdArgs);
-                    default -> doHelp(player);
+                    default -> doHelp(Main.plugin, player, "cmd.helpMsg");
                 }
             } else {
-                doHelp(player);
+                doHelp(Main.plugin, player, "cmd.helpMsg");
             }
         } else {
-            ColorLogUtil.logError(Main.plugin, "该命令必须在游戏中执行");
+            ColorLogUtil.logError(Main.plugin, I18nUtil.getText(Main.plugin, "pluginMsg.commandNotExecInGame"));
         }
 
         return false;

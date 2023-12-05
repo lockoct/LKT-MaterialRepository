@@ -1,0 +1,122 @@
+pluginMsg:
+  enableSuccess: "Plugin démarré avec succès"
+  dbConnectFailed: "Échec du démarrage du plugin, base de données non connectée. Veuillez démarrer la base de données et recharger ce plugin."
+  commandConfigNotFound: "Échec du démarrage du plugin, configuration de commande introuvable. Veuillez télécharger à nouveau ce plugin."
+  commandNotExecInGame: "Cette commande doit être exécutée en jeu."
+  invalidCornTab: "Il y a un problème avec l'expression cornTab, l'expression par défaut a été utilisée : 0 0 4 * * ? *"
+  autoCollectComplete: "Toutes les tâches de collecte ont été effectuées."
+areaListMenu:
+  title: "Menu de gestion des zones"
+  itemInfo: "Il y a un total de %s conteneurs dans cette zone."
+  pageStatisticsInfo: "Total de %s zones"
+areaManageMenu:
+  title: "Gestion des zones"
+  containerStatisticsInfo: "Il y a un total de %s conteneurs dans cette zone."
+  deleteSuccessful: "Zone %s supprimée avec succès"
+  btn:
+    delete: "Supprimer la zone"
+    enable: "Activé"
+    disable: "Désactivé"
+    reload: "Reconnaître à nouveau les conteneurs"
+itemListMenu:
+  title: "Menu de sélection des objets"
+  itemInfo: "%s restants"
+  pageStatisticsInfo: "Total de %s types d'objets"
+unstackItemListMenu:
+  title: "Menu de récupération d'objets"
+  pageStatisticsInfo: "Total de %s objets"
+keyboardMenu:
+  title: "Sélection de la quantité"
+  calcResPrefix: "Quantité d'objets à prendre : "
+  mode:
+    getBySingle: "Obtenir un par un"
+    getByGroup: "Obtenir par groupe"
+    getByBox: "Obtenir par boîte"
+  unit:
+    single: "unités"
+    group: "groupes"
+    box: "boîtes"
+  btn:
+    clear: "Vider"
+    delete: "Supprimer"
+    confirm: "Confirmer"
+shulkerBoxPlaceMenu:
+  title: "Veuillez placer le nombre correspondant de Shulker Boxes"
+  notEmptyBox: "La Shulker Box pour la collecte doit être vide"
+  btn:
+    cancel: "Annuler"
+    confirm: "Confirmer"
+cmd:
+  helpMsg: [
+    "Aide pour les commandes du plugin d'objets :",
+    "/mr mark - Commande de marquage de zone de collecte",
+    "/mr item - Ouvrir le menu des objets",
+    "/mr area - Ouvrir le menu de gestion des zones",
+    "Choisissez une sous-commande pour obtenir des informations détaillées."
+  ]
+  areaCmd:
+    helpMsg: [
+      "Aide pour le menu de gestion des zones du plugin d'objets :",
+      "/mr area - Ouvrir le menu de gestion des zones"
+    ]
+    reloadMsg:
+      updateComplete: "Mise à jour de la zone de collecte terminée"
+      decrease: " Diminution"
+      increase: " Augmentation"
+      chestCount: " %s coffre(s),"
+      barrelCount: " %s tonneau(x),"
+      furnaceCount: " %s four(s),"
+      blastFurnaceCount: " %s haut-fourneau(x),"
+      smokerCount: " %s fumoir(s),"
+      hopperCount: " %s entonnoir(s),"
+    identifyContainerFailed: "Échec de la reconnaissance de conteneur de collecte"
+  markCmd:
+    helpMsg: [
+      "Aide pour la commande de marquage du plugin d'objets :",
+      "/mr mark start - Démarrer le mode de marquage",
+      "/mr mark cancel - Quitter le mode de marquage sans enregistrer",
+      "/mr mark save NomZone - Enregistrer la zone"
+    ]
+    startCmd:
+      helpMsg: [
+        "Description : Démarrez le mode de marquage pour définir la zone de collecte des objets",
+        "Commande : /mr mark start"
+      ]
+    saveCmd:
+      helpMsg: [
+        "Description : Enregistrer une zone de collection de manière à ce que le plugin puisse commencer à collecter les objets.",
+        "Commande : /mr mark save NomZone"
+      ]
+      markPointsInDifferentWorld: "Les deux points de marquage ne sont pas dans la même dimension. Veuillez recommencer."
+      cannotGetMarkPointWorld: "Impossible d'obtenir le monde où se trouve le point de marquage"
+      markPointSelectNotComplete: "Les points de marquage n'ont pas été sélectionnés. Veuillez sélectionner deux points de marquage avant d'enregistrer."
+      saveSuccessful: "Zone de collecte enregistrée avec succès. Sortie du mode de marquage."
+      saveFailed: "Échec de l'enregistrement de la zone de collecte. Sortie du mode de marquage."
+    cancelCmd:
+      exitMarkMode: "Annulation et sortie du mode de marquage."
+    clearCmd:
+      selectionCleared: "Sélection effacée."
+    notInMarkMode: "Vous n'êtes pas en mode de marquage. Veuillez utiliser /mr mark start pour entrer en mode de marquage de la zone de collecte d'objets."
+    alreadyInMarkMode: "Vous êtes déjà en mode de marquage. Utilisez le clic gauche et droit pour sélectionner deux points, formant un cube comme zone de collecte."
+    selectPoint: "Point de marquage %s sélectionné [%s, %s, %s]"
+    areaTooLarge: "La zone ne peut pas être plus grande que 27000 blocs."
+    areaStatisticsMsg:
+      start: "Dans cette zone, qui se compose au total de %s blocs,"
+      chestCount: " %s coffre(s),"
+      barrelCount: " %s tonneau(x),"
+      furnaceCount: " %s four(s),"
+      blastFurnaceCount: " %s haut-fourneau(x),"
+      smokerCount: " %s fumoir(s),"
+      hopperCount: " %s entonnoir(s),"
+      noContainer: "Il n'y a pas de conteneur dans la zone qui se compose au total de %s blocs."
+  itemCmd:
+    helpMsg: [
+      "Aide pour le menu des objets du plugin d'objets :",
+      "/mr item - Ouvrir le menu des objets"
+    ]
+    noAmount: "Aucun stock disponible pour cet objet"
+    amountChanged: "Le stock de l'objet a changé, la quantité réelle reçue sera inférieure à la quantité demandée"
+    amountLack: "Stock insuffisant pour cet objet"
+    freeSlotLack: "Nombre d'emplacements vides insuffisant dans l'inventaire. Veuillez vider l'inventaire avant de recevoir les objets."
+    getSuccessful: "Objets reçus avec succès. Total : %s groupes, %s objets"
+    getByBoxSuccessful: "Objets reçus avec succès. Total : %s boîtes"

@@ -1,8 +1,13 @@
 package com.github.lockoct.item.task;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.entity.ShulkerBoxPlaceMenuData;
+import com.github.lockoct.nbtapi.NBT;
+import com.github.lockoct.nbtapi.iface.ReadWriteNBT;
 import com.github.lockoct.utils.DatabaseUtil;
+import com.github.lockoct.utils.I18nUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
@@ -37,21 +42,20 @@ public class SendBoxTask extends BukkitRunnable {
         if (dao == null) {
             return;
         }
-        Player player = this.player;
         boolean moreThanRepoAmount;
         // 需要获取当前类型最大堆叠数，不能直接用64
-        Material material = Material.getMaterial(this.itemInfo.getType());
+        Material material = Material.getMaterial(itemInfo.getType());
         assert material != null;
         // 倍率
         int times = material.getMaxStackSize() * 27;
-        int amount = this.calcRes * times;
-        Item item = dao.query(Item.class, Cnd.where("id", "=", this.itemInfo.getId())).get(0);
+        int amount = calcRes * times;
+        Item item = dao.query(Item.class, Cnd.where("id", "=", itemInfo.getId())).get(0);
         if (item.getAmount() <= 0) {
-            player.sendMessage(ChatColor.RED + "该物品暂无库存");
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.itemCmd.noAmount"));
             return;
         }
 
-        int needBox = this.calcRes;
+        int needBox = calcRes;
         // 当需求数量大于库存数量时，对获取物品数量进行修正
         if (amount > item.getAmount()) {
             needBox = item.getAmount() / times; //需要的潜影盒数量
@@ -66,22 +70,35 @@ public class SendBoxTask extends BukkitRunnable {
         int res = dao.update(Item.class, Chain.makeSpecial("amount", "-" + amount), Cnd.where("amount", ">=", amount).and("id", "=", item.getId()));
         if (res > 0) {
             // 往潜影盒添加物品
-            for (int i = 0; i < Math.min(this.shulkerBoxMap.size(), needBox); i++) {
-                PlayerInventory playerInv = this.player.getInventory();
-                this.shulkerBoxMap.forEach((k, v) -> {
+            for (int i = 0; i < Math.min(shulkerBoxMap.size(), needBox); i++) {
+                PlayerInventory playerInv = player.getInventory();
+                shulkerBoxMap.forEach((k, v) -> {
                     ItemStack is = playerInv.getItem(v.getFromPos());
                     if (is != null) {
                         BlockStateMeta bsm = (BlockStateMeta) is.getItemMeta();
                         assert bsm != null;
                         ShulkerBox box = (ShulkerBox) bsm.getBlockState();
                         Inventory boxInv = box.getInventory();
-                        Material m = Material.getMaterial(item.getType());
-                        assert m != null;
-                        for (int j = 0; j < boxInv.getSize(); j++) {
+
+                        // 对有nbt标签的物品进行处理
+                        if (StringUtils.isNotBlank(item.getNbtMd5())) {
+                            ReadWriteNBT nbt = NBT.parseNBT(item.getNbt());
+                            ItemStack tmpIs = NBT.itemStackFromNBT(nbt);
+                            assert tmpIs != null;
+                            for (int j = 0; j < boxInv.getSize(); j++) {
+                                tmpIs.setAmount(tmpIs.getMaxStackSize());
+                                boxInv.addItem(tmpIs);
+                            }
+                        } else {
+                            Material m = Material.getMaterial(item.getType());
+                            assert m != null;
                             ItemStack tmpIs = new ItemStack(m);
-                            tmpIs.setAmount(tmpIs.getMaxStackSize());
-                            boxInv.addItem(tmpIs);
+                            for (int j = 0; j < boxInv.getSize(); j++) {
+                                tmpIs.setAmount(m.getMaxStackSize());
+                                boxInv.addItem(tmpIs);
+                            }
                         }
+
                         bsm.setBlockState(box);
                         is.setItemMeta(bsm);
                     }
@@ -89,11 +106,11 @@ public class SendBoxTask extends BukkitRunnable {
                 });
             }
             if (moreThanRepoAmount) {
-                player.sendMessage(ChatColor.YELLOW + "物料库存出现变化，实际领取数量将少于请求数量");
+                player.sendMessage(ChatColor.YELLOW + I18nUtil.getText(Main.plugin, player, "cmd.itemCmd.amountChanged"));
             }
-            player.sendMessage(ChatColor.GREEN + "物料领取成功，共计" + needBox + "盒物品");
+            player.sendMessage(ChatColor.GREEN + I18nUtil.getText(Main.plugin, player, "cmd.itemCmd.getByBoxSuccessful", needBox));
         } else {
-            player.sendMessage(ChatColor.RED + "该物品库存不足");
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.itemCmd.amountLack"));
         }
     }
 }

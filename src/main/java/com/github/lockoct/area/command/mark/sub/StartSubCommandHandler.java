@@ -1,8 +1,10 @@
 package com.github.lockoct.area.command.mark.sub;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.MarkListener;
 import com.github.lockoct.command.BaseCommandHandler;
 import com.github.lockoct.entity.MarkData;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -10,14 +12,6 @@ import java.time.LocalDateTime;
 
 public class StartSubCommandHandler extends BaseCommandHandler {
     private static StartSubCommandHandler instance;
-
-    public StartSubCommandHandler() {
-        // 先清除后添加
-        helpStrList.clear();
-        // 添加帮助信息
-        helpStrList.add("介绍：开启标记模式，在标记模式下可划定物料采集区域");
-        helpStrList.add("命令：/mr mark start");
-    }
 
     public static StartSubCommandHandler getInstance() {
         if (instance == null) {
@@ -32,10 +26,10 @@ public class StartSubCommandHandler extends BaseCommandHandler {
         int key = player.hashCode();
         //
         if (args.length > 1) {
-            doHelp(player);
+            doHelp(Main.plugin, player, "cmd.markCmd.startCmd.helpMsg");
             return;
         }
-        player.sendMessage("已进入标记模式，请使用左右键分别选取两个点，两个点之间形成立方体为采集区域");
+        player.sendMessage(I18nUtil.getText(Main.plugin, player, "cmd.markCmd.alreadyInMarkMode"));
         MarkData data = new MarkData();
         data.setPlayer(player);
         data.setMarkStartTime(LocalDateTime.now());

@@ -1,0 +1,122 @@
+pluginMsg:
+  enableSuccess: "Plugin enabled successfully."
+  dbConnectFailed: "Plugin failed to start as database is not connected. Please connect to the database and reload this plugin."
+  commandConfigNotFound: "Plugin failed to start as command configuration cannot be found. Please re-download this plugin."
+  commandNotExecInGame: "This command must be executed in the game."
+  invalidCornTab: "cornTab expression has some problems, use default expression: 0 0 4 * * ? *"
+  autoCollectComplete: "All collection tasks have been completed."
+areaListMenu:
+  title: "Area Management Menu"
+  itemInfo: "%s containers in the area"
+  pageStatisticsInfo: "Total %s areas"
+areaManageMenu:
+  title: "Area Management"
+  containerStatisticsInfo: "%s containers in the area"
+  deleteSuccessful: "Area %s deleted successfully."
+  btn:
+    delete: "Delete Area"
+    enable: "Enabled"
+    disable: "Disabled"
+    reload: "Reload container recognition in Area"
+itemListMenu:
+  title: "Item Selection Menu"
+  itemInfo: "%s remaining"
+  pageStatisticsInfo: "Total %s item types"
+unstackItemListMenu:
+  title: "Item Pickup Menu"
+  pageStatisticsInfo: "Total %s items"
+keyboardMenu:
+  title: "Quantity Selection"
+  calcResPrefix: "Number of items to take: "
+  mode:
+    getBySingle: "Get by single"
+    getByGroup: "Get by group"
+    getByBox: "Get by box"
+  unit:
+    single: " pcs"
+    group: " groups"
+    box: " boxes"
+  btn:
+    clear: "Clear"
+    delete: "Delete"
+    confirm: "Confirm"
+shulkerBoxPlaceMenu:
+  title: "Please place the corresponding number of shulker boxes"
+  notEmptyBox: "The shulker box used for picking up items must be empty."
+  btn:
+    cancel: "Cancel"
+    confirm: "Confirm"
+cmd:
+  helpMsg: [
+    "Item plugin command help:",
+    "/mr mark - Mark collection area command",
+    "/mr item - Open item menu",
+    "/mr area - Open area management menu",
+    "Select any sub-command for detailed usage."
+  ]
+  areaCmd:
+    helpMsg: [
+      "Item plugin area management menu help:",
+      "/mr area - Open area management menu"
+    ]
+    reloadMsg:
+      updateComplete: "Collection area update completed"
+      decrease: ", decreased"
+      increase: ", increased"
+      chestCount: " %s chest(s),"
+      barrelCount: " %s barrel(s),"
+      furnaceCount: " %s furnace(s),"
+      blastFurnaceCount: " %s blast furnace(s),"
+      smokerCount: " %s smoker(s),"
+      hopperCount: " %s hopper(s),"
+    identifyContainerFailed: "Failed to re-identify container for collection area"
+  markCmd:
+    helpMsg: [
+      "Item plugin mark command help:",
+      "/mr mark start - Start marking mode",
+      "/mr mark cancel - Quit marking mode without saving",
+      "/mr mark save AreaName - Save the area"
+    ]
+    startCmd:
+      helpMsg: [
+        "Introduction: Start marking mode to define the item collection area",
+        "Command: /mr mark start"
+      ]
+    saveCmd:
+      helpMsg: [
+        "Introduction: Save the marked area. The plugin will collect items from the containers in this area",
+        "Command: /mr mark save AreaName"
+      ]
+      markPointsInDifferentWorld: "The two mark points are not in the same dimension. Please remark."
+      cannotGetMarkPointWorld: "Unable to get the world where the mark point is located"
+      markPointSelectNotComplete: "Mark points have not been selected. Please select two mark points before saving."
+      saveSuccessful: "Collection area saved successfully, exited marking mode."
+      saveFailed: "Failed to save the collection area, exited marking mode."
+    cancelCmd:
+      exitMarkMode: "Cancelled and exited marking mode."
+    clearCmd:
+      selectionCleared: "Selection cleared."
+    notInMarkMode: "Not in marking mode, please use /mr mark start to enter marking mode to mark collection area."
+    alreadyInMarkMode: "Already in marking mode, please use left and right click to select two points. The space between the two points will form a cube which is the collection area."
+    selectPoint: "Selected mark point %s [%s, %s, %s]"
+    areaTooLarge: "The area cannot be larger than 27000 blocks."
+    areaStatisticsMsg:
+      start: "Total block size of this area is %s, and has"
+      chestCount: " %s chest(s),"
+      barrelCount: " %s barrel(s),"
+      furnaceCount: " %s furnace(s),"
+      blastFurnaceCount: " %s blast furnace(s),"
+      smokerCount: " %s smoker(s),"
+      hopperCount: " %s hopper(s),"
+      noContainer: "Total block size of this area is %s, and no container is detected."
+  itemCmd:
+    helpMsg: [
+      "Item plugin item menu help:",
+      "/mr item - Open item menu"
+    ]
+    noAmount: "No stock for this item currently"
+    amountChanged: "The stock of the item has changed, the actual quantity received will be less than the requested quantity."
+    amountLack: "Not enough stock for this item"
+    freeSlotLack: "Not enough free slots in inventory. Please clear your inventory before receiving items."
+    getSuccessful: "Items received successfully, total of %s groups, %s items."
+    getByBoxSuccessful: "Items received successfully, total of %s boxes."

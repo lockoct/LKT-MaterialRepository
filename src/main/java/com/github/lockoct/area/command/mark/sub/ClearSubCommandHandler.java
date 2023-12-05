@@ -1,8 +1,10 @@
 package com.github.lockoct.area.command.mark.sub;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.area.listener.MarkListener;
 import com.github.lockoct.command.BaseCommandHandler;
 import com.github.lockoct.entity.MarkData;
+import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,9 +27,9 @@ public class ClearSubCommandHandler extends BaseCommandHandler {
         if (data != null) {
             data.setMarkPoint1(null);
             data.setMarkPoint2(null);
-            player.sendMessage("已清除选区");
+            player.sendMessage(I18nUtil.getText(Main.plugin, player, "cmd.markCmd.clearCmd.selectionCleared"));
         } else {
-            player.sendMessage(ChatColor.RED + "未进入标记模式，请先使用 /mr mark start 进入标记模式标记采集区域");
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.clearCmd.selectionCleared"));
         }
     }
 }

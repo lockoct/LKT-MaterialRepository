@@ -63,7 +63,7 @@ public class CollectArea extends BaseEntity {
     private boolean deleted;
 
     @Many(field = "areaId")
-    private List<CollectAreaChest> chests;
+    private List<CollectAreaContainer> containers;
 
     public String getId() {
         return id;
@@ -153,11 +153,11 @@ public class CollectArea extends BaseEntity {
         this.deleted = deleted;
     }
 
-    public List<CollectAreaChest> getChests() {
-        return chests;
+    public List<CollectAreaContainer> getContainers() {
+        return containers;
     }
 
-    public void setChests(List<CollectAreaChest> chests) {
-        this.chests = chests;
+    public void setContainers(List<CollectAreaContainer> containers) {
+        this.containers = containers;
     }
 }

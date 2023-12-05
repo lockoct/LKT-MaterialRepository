@@ -1,0 +1,122 @@
+pluginMsg:
+  enableSuccess: "插件启动成功"
+  dbConnectFailed: "插件启动失败，未连接数据库，请开启数据库后再重新加载本插件"
+  commandConfigNotFound: "插件启动失败，找不到命令配置，请重新下载本插件"
+  commandNotExecInGame: "该命令必须在游戏中执行"
+  invalidCornTab: "cornTab表达式存在问题，已使用默认表达式：0 0 4 * * ? *"
+  autoCollectComplete: "所有采集任务已执行完毕"
+areaListMenu:
+  title: "区域管理菜单"
+  itemInfo: "区域内共有 %s 个容器"
+  pageStatisticsInfo: "共 %s 块区域"
+areaManageMenu:
+  title: "区域管理"
+  containerStatisticsInfo: "区域内共有 %s 个容器"
+  deleteSuccessful: "区域 %s 删除成功"
+  btn:
+    delete: "删除区域"
+    enable: "已启用"
+    disable: "已禁用"
+    reload: "重新识别区域内容器"
+itemListMenu:
+  title: "物料选择菜单"
+  itemInfo: "剩余 %s 个"
+  pageStatisticsInfo: "共 %s 类物品"
+unstackItemListMenu:
+  title: "物品领取菜单"
+  pageStatisticsInfo: "共 %s 个物品"
+keyboardMenu:
+  title: "数量选择"
+  calcResPrefix: "拿取物品的数量为："
+  mode:
+    getBySingle: "按个获取"
+    getByGroup: "按组获取"
+    getByBox: "按盒获取"
+  unit:
+    single: "个"
+    group: "组"
+    box: "盒"
+  btn:
+    clear: "清空"
+    delete: "删除"
+    confirm: "确认"
+shulkerBoxPlaceMenu:
+  title: "请放置对应数量的潜影盒"
+  notEmptyBox: "用于取货的潜影盒必须为空潜影盒"
+  btn:
+    cancel: "取消"
+    confirm: "确认"
+cmd:
+  helpMsg: [
+    "物料插件命令帮助：",
+    "/mr mark - 标记采集区域命令",
+    "/mr item - 打开物料菜单",
+    "/mr area - 打开区域管理菜单",
+    "选择输入任意子命令，可查看详细用法。"
+  ]
+  areaCmd:
+    helpMsg: [
+      "物料插件区域管理菜单帮助：",
+      "/mr area - 打开区域管理菜单"
+    ]
+    reloadMsg:
+      updateComplete: "采集区域更新完成"
+      decrease: "，减少了"
+      increase: "，增加了"
+      chestCount: "%s个箱子，"
+      barrelCount: "%s个木桶，"
+      furnaceCount: "%s个熔炉，"
+      blastFurnaceCount: "%s个高炉，"
+      smokerCount: "%s个烟熏炉，"
+      hopperCount: "%s个漏斗，"
+    identifyContainerFailed: "采集区域重新识别容器失败"
+  markCmd:
+    helpMsg: [
+      "物料插件标记命令帮助：",
+      "/mr mark start - 开启标记模式",
+      "/mr mark cancel - 不保存退出标记模式",
+      "/mr mark save 区域名称 - 保存区域"
+    ]
+    startCmd:
+      helpMsg: [
+        "介绍：开启标记模式，在标记模式下可划定物料采集区域",
+        "命令：/mr mark start"
+      ]
+    saveCmd:
+      helpMsg: [
+        "介绍：保存标记区域，插件后续将从该区域中的容器采集物品",
+        "命令：/mr mark save 区域名称"
+      ]
+      markPointsInDifferentWorld: "两个标记点不在同一维度，请重新标记"
+      cannotGetMarkPointWorld: "无法获取标记点所在世界"
+      markPointSelectNotComplete: "标记点未选取完成，请选取两个标记点后再进行保存"
+      saveSuccessful: "采集区域保存成功，已退出标记模式"
+      saveFailed: "采集区域保存失败，已退出标记模式"
+    cancelCmd:
+      exitMarkMode: "已取消并退出标记模式"
+    clearCmd:
+      selectionCleared: "已清除选区"
+    notInMarkMode: "未进入标记模式，请先使用 /mr mark start 进入标记模式标记采集区域"
+    alreadyInMarkMode: "已进入标记模式，请使用左右键分别选取两个点，两个点之间形成立方体为采集区域"
+    selectPoint: "已选中第%s个标记点[%s, %s, %s]"
+    areaTooLarge: "区域范围不能大于27000方块大小"
+    areaStatisticsMsg:
+      start: "该区域总计%s方块大小，共有"
+      chestCount: "箱子%s个，"
+      barrelCount: "木桶%s个，"
+      furnaceCount: "熔炉%s个，"
+      blastFurnaceCount: "高炉%s个，"
+      smokerCount: "烟熏炉%s个，"
+      hopperCount: "漏斗%s个，"
+      noContainer: "该区域总计%s方块大小，未发现有容器"
+  itemCmd:
+    helpMsg: [
+      "物料插件物料菜单帮助：",
+      "/mr item - 打开物料菜单"
+    ]
+    noAmount: "该物品暂无库存"
+    amountChanged: "物料库存出现变化，实际领取数量将少于请求数量"
+    amountLack: "该物品库存不足"
+    freeSlotLack: "背包空余格子数量不足，请先清理背包后再领取物料"
+    getSuccessful: "物料领取成功，共计%s组%s个物品"
+    getByBoxSuccessful: "物料领取成功，共计%s盒物品"

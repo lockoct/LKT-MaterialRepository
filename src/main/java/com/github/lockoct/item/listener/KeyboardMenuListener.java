@@ -1,7 +1,7 @@
 package com.github.lockoct.item.listener;
 
+import com.github.lockoct.item.menu.KeyboardMenu;
 import com.github.lockoct.menu.BaseMenu;
-import com.github.lockoct.menu.KeyboardMenu;
 import com.github.lockoct.menu.listener.BaseMenuListener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,7 +17,7 @@ public class KeyboardMenuListener extends BaseMenuListener {
     public boolean onClick(InventoryClickEvent e) {
         if (super.onClick(e)) {
             ItemStack is = e.getCurrentItem();
-            KeyboardMenu menu = (KeyboardMenu) this.getMenu();
+            KeyboardMenu menu = (KeyboardMenu) getMenu();
             if (is != null) {
                 String sign = menu.getOperationItemPos().get(e.getRawSlot());
                 sign = sign == null ? "" : sign;
