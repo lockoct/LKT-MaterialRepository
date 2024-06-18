@@ -5,6 +5,7 @@ pluginMsg:
   commandNotExecInGame: "该命令必须在游戏中执行"
   invalidCornTab: "cornTab表达式存在问题，已使用默认表达式：0 0 4 * * ? *"
   autoCollectComplete: "所有采集任务已执行完毕"
+  itemLoadError: "物品加载错误，您可能在低版本服务端中使用了高版本的物品或物品特性，请更新服务端版本"
 areaListMenu:
   title: "区域管理菜单"
   itemInfo: "区域内共有 %s 个容器"
@@ -20,11 +21,18 @@ areaManageMenu:
     reload: "重新识别区域内容器"
 itemListMenu:
   title: "物料选择菜单"
-  itemInfo: "剩余 %s 个"
+  itemInfo:
+    remaining: "剩余 %s 个"
+    special: "，常规物品 %s 个，特殊物品 %s 个"
   pageStatisticsInfo: "共 %s 类物品"
+  itemLoadErr: "无法加载该物品"
 unstackItemListMenu:
   title: "物品领取菜单"
   pageStatisticsInfo: "共 %s 个物品"
+  btn:
+    normal:
+      title: "切换为获取常规物品"
+      description: "批量获取仅为常规状态下的物品"
 keyboardMenu:
   title: "数量选择"
   calcResPrefix: "拿取物品的数量为："
@@ -40,6 +48,9 @@ keyboardMenu:
     clear: "清空"
     delete: "删除"
     confirm: "确认"
+    special:
+      title: "切换为获取特殊物品"
+      description: "仅获取包含有耐久度、名称等特殊数据的物品"
 shulkerBoxPlaceMenu:
   title: "请放置对应数量的潜影盒"
   notEmptyBox: "用于取货的潜影盒必须为空潜影盒"
@@ -69,6 +80,7 @@ cmd:
       blastFurnaceCount: "%s个高炉，"
       smokerCount: "%s个烟熏炉，"
       hopperCount: "%s个漏斗，"
+      decoratedPotCount: "%s个陶罐，"
     identifyContainerFailed: "采集区域重新识别容器失败"
   markCmd:
     helpMsg: [
@@ -108,6 +120,7 @@ cmd:
       blastFurnaceCount: "高炉%s个，"
       smokerCount: "烟熏炉%s个，"
       hopperCount: "漏斗%s个，"
+      decoratedPotCount: "陶罐%个，"
       noContainer: "该区域总计%s方块大小，未发现有容器"
   itemCmd:
     helpMsg: [

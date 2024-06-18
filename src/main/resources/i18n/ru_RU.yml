@@ -5,6 +5,7 @@ pluginMsg:
   commandNotExecInGame: "Эта команда должна быть выполнена в игре."
   invalidCornTab: "Проблема с выражением cornTab, используется стандартное выражение: 0 0 4 * * ? *"
   autoCollectComplete: "Все задания по сбору выполнены"
+  itemLoadError: "Ошибка загрузки предмета, возможно, вы используете предметы или функции предметов из более новой версии на сервере более старой версии. Пожалуйста, обновите версию сервера."
 areaListMenu:
   title: "Меню управления областями"
   itemInfo: "В области %s контейнеров"
@@ -20,11 +21,18 @@ areaManageMenu:
     reload: "Перезагрузить содержимое областей"
 itemListMenu:
   title: "Меню выбора предметов"
-  itemInfo: "%s осталось"
+  itemInfo:
+    remaining: "Осталось %s шт."
+    special: ", обычных предметов %s шт., специальных предметов %s шт."
   pageStatisticsInfo: "Всего %s типов предметов"
+  itemLoadErr: "Не удалось загрузить этот предмет"
 unstackItemListMenu:
   title: "Меню получения предметов"
   pageStatisticsInfo: "Всего предметов: %s"
+  btn:
+    normal:
+      title: "Переключиться на получение обычных предметов"
+      description: "Массовое получение только предметов в обычном состоянии"
 keyboardMenu:
   title: "Выбор количества"
   calcResPrefix: "Количество выбранных предметов: "
@@ -40,6 +48,9 @@ keyboardMenu:
     clear: "Очистить"
     delete: "Удалить"
     confirm: "Подтвердить"
+    special:
+      title: "Переключиться на получение специальных предметов"
+      description: "Получать только предметы с особыми данными, такими как прочность и имя"
 shulkerBoxPlaceMenu:
   title: "Пожалуйста, поместите соответствующее количество шулкер-боксов"
   notEmptyBox: "Шулкер-бокс для получения предметов должен быть пустым"
@@ -69,6 +80,7 @@ cmd:
       blastFurnaceCount: " %s плавильных печей,"
       smokerCount: " %s коптильных печей,"
       hopperCount: " %s воронок,"
+      decoratedPotCount: "%s украшенных горшков,"
     identifyContainerFailed: "Не удалось перераспознать контейнеры области сбора"
   markCmd:
     helpMsg: [
@@ -108,6 +120,7 @@ cmd:
       blastFurnaceCount: " %s плавильных печей,"
       smokerCount: " %s коптильных печей,"
       hopperCount: " %s воронок,"
+      decoratedPotCount: " %s украшенные горшки,"
       noContainer: "Общий размер области составляет %s блоков. Контейнеры не обнаружены"
   itemCmd:
     helpMsg: [

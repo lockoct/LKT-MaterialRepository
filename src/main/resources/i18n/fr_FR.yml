@@ -5,6 +5,7 @@ pluginMsg:
   commandNotExecInGame: "Cette commande doit être exécutée en jeu."
   invalidCornTab: "Il y a un problème avec l'expression cornTab, l'expression par défaut a été utilisée : 0 0 4 * * ? *"
   autoCollectComplete: "Toutes les tâches de collecte ont été effectuées."
+  itemLoadError: "Erreur de chargement de l'objet, vous utilisez peut-être des objets ou des fonctionnalités d'objet d'une version supérieure sur un serveur de version inférieure. Veuillez mettre à jour la version du serveur."
 areaListMenu:
   title: "Menu de gestion des zones"
   itemInfo: "Il y a un total de %s conteneurs dans cette zone."
@@ -20,11 +21,18 @@ areaManageMenu:
     reload: "Reconnaître à nouveau les conteneurs"
 itemListMenu:
   title: "Menu de sélection des objets"
-  itemInfo: "%s restants"
+  itemInfo:
+    remaining: "Restant %s"
+    special: ", objets réguliers %s, objets spéciaux %s"
   pageStatisticsInfo: "Total de %s types d'objets"
+  itemLoadErr: "Impossible de charger l'objet"
 unstackItemListMenu:
   title: "Menu de récupération d'objets"
   pageStatisticsInfo: "Total de %s objets"
+  btn:
+    normal:
+      title: "Basculer pour récupérer des objets réguliers"
+      description: "Récupérer en masse uniquement les objets en état régulier"
 keyboardMenu:
   title: "Sélection de la quantité"
   calcResPrefix: "Quantité d'objets à prendre : "
@@ -40,6 +48,9 @@ keyboardMenu:
     clear: "Vider"
     delete: "Supprimer"
     confirm: "Confirmer"
+    special:
+      title: "Basculer pour récupérer des objets spéciaux"
+      description: "Récupérer uniquement les objets avec des données spéciales comme la durabilité et le nom"
 shulkerBoxPlaceMenu:
   title: "Veuillez placer le nombre correspondant de Shulker Boxes"
   notEmptyBox: "La Shulker Box pour la collecte doit être vide"
@@ -69,6 +80,7 @@ cmd:
       blastFurnaceCount: " %s haut-fourneau(x),"
       smokerCount: " %s fumoir(s),"
       hopperCount: " %s entonnoir(s),"
+      decoratedPotCount: "%s pot(s) décorés,"
     identifyContainerFailed: "Échec de la reconnaissance de conteneur de collecte"
   markCmd:
     helpMsg: [
@@ -108,6 +120,7 @@ cmd:
       blastFurnaceCount: " %s haut-fourneau(x),"
       smokerCount: " %s fumoir(s),"
       hopperCount: " %s entonnoir(s),"
+      decoratedPotCount: " %s pot(s) décorés,"
       noContainer: "Il n'y a pas de conteneur dans la zone qui se compose au total de %s blocs."
   itemCmd:
     helpMsg: [

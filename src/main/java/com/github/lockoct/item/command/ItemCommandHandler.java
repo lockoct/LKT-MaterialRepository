@@ -4,7 +4,6 @@ import com.github.lockoct.Main;
 import com.github.lockoct.command.BaseCommandHandler;
 import com.github.lockoct.item.listener.ItemListMenuListener;
 import com.github.lockoct.item.menu.ItemListMenu;
-import com.github.lockoct.utils.I18nUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,7 +25,7 @@ public class ItemCommandHandler extends BaseCommandHandler {
             doHelp(Main.plugin, player, "cmd.itemCmd.helpMsg");
             return;
         }
-        ItemListMenu menu = new ItemListMenu(I18nUtil.getText(Main.plugin, player, "itemListMenu.title"), player);
+        ItemListMenu menu = new ItemListMenu(player);
         menu.open(new ItemListMenuListener(menu));
     }
 }

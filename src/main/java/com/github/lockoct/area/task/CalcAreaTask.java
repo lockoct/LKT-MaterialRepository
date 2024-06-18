@@ -34,8 +34,7 @@ public class CalcAreaTask extends BukkitRunnable {
             player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.areaTooLarge"));
             return;
         }
-        int key = player.hashCode();
-        MarkData data = MarkListener.getMarkModePlayers().get(key);
+        MarkData data = MarkListener.getMarkModePlayers().get(player);
         Map<Material, ArrayList<Location>> locationMap = data.getContainerLocation();
         // 统计选区内箱子前，先要把上一次选区的容器记录清掉
         // 避免相同位置的容器添加多次

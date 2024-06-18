@@ -30,6 +30,7 @@ public class KeyboardMenuListener extends BaseMenuListener {
                     case "clear" -> menu.clear();
                     case "delete" -> menu.setCalcResult(menu.getCalcResult()/10);
                     case "confirm" -> menu.confirm();
+                    case "special" -> menu.toUnstackItemMenu();
                     default -> {
                         if (!sign.equals("")) {
                             String calcTmp = "" + menu.getCalcResult() + sign;

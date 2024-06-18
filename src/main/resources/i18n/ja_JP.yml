@@ -5,6 +5,7 @@ pluginMsg:
   commandNotExecInGame: "このコマンドはゲーム内で実行する必要があります"
   invalidCornTab: "cornTab式に問題があります。デフォルトの式を使用しました: 0 0 4 * * ? *"
   autoCollectComplete: "すべての収集タスクが完了しました"
+  itemLoadError: "アイテムの読み込みエラー、おそらく低いバージョンのサーバーで高いバージョンのアイテムまたはアイテムの機能を使用しています、サーバーのバージョンを更新してください"
 areaListMenu:
   title: "エリア管理メニュー"
   itemInfo: "エリア内には%s個のコンテナがあります"
@@ -20,11 +21,18 @@ areaManageMenu:
     reload: "エリアコンテナを再認識"
 itemListMenu:
   title: "アイテム選択メニュー"
-  itemInfo: "%s個残っています"
+  itemInfo:
+    remaining: "残り %s 個"
+    special: "、通常アイテム %s 個、特別アイテム %s 個"
   pageStatisticsInfo: "合計%s種類のアイテム"
+  itemLoadErr: "このアイテムを読み込むことができません"
 unstackItemListMenu:
   title: "アイテム受け取りメニュー"
   pageStatisticsInfo: "合計%s個のアイテム"
+  btn:
+    normal:
+      title: "通常アイテムの取得に切り替える"
+      description: "通常の状態のアイテムのみを一括で取得します"
 keyboardMenu:
   title: "数量選択"
   calcResPrefix: "取得するアイテムの数量："
@@ -40,6 +48,9 @@ keyboardMenu:
     clear: "クリア"
     delete: "削除"
     confirm: "確認"
+    special:
+      title: "特別アイテムの取得に切り替える"
+      description: "耐久性や名前などの特別なデータを含むアイテムのみを取得します"
 shulkerBoxPlaceMenu:
   title: "対応する数のシュルカーボックスを配置してください"
   notEmptyBox: "アイテムを取得するためのシュルカーボックスは空でなければなりません"
@@ -69,6 +80,7 @@ cmd:
       blastFurnaceCount: "%s個の溶鉱炉、"
       smokerCount: "%s個の燻製器、"
       hopperCount: "%s個のホッパー、"
+      decoratedPotCount: "%s個の装飾された壺、"
     identifyContainerFailed: "収集エリアのコンテナの再認識に失敗しました"
   markCmd:
     helpMsg: [
@@ -108,6 +120,7 @@ cmd:
       blastFurnaceCount: "%s個の溶鉱炉、"
       smokerCount: "%s個の燻製器、"
       hopperCount: "%s個のホッパー、"
+      decoratedPotCount: "%s個装飾された壺、"
       noContainer: "このエリアの合計サイズは%sブロックで、コンテナは見つかりませんでした"
   itemCmd:
     helpMsg: [

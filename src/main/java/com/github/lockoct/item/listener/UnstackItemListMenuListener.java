@@ -30,6 +30,7 @@ public class UnstackItemListMenuListener extends BaseMenuListener {
                     case "back" -> menu.back();
                     case "pageInfo" -> {
                     }
+                    case "normal" -> menu.toKeyboardMenu();
                     default -> {
                         // 当点击的物品是存储的物品时，直接放入背包中
                         if (currentPos < 45) {

@@ -36,7 +36,7 @@ public class FurnaceHandler implements ContainerHandler {
         if (is != null) {
             ItemHandler handler = ItemHandlerFactory.getHandler(is);
             if (handler.execute()) {
-                // 新增或更新成功后去除原本箱子中的物品
+                // 新增或更新成功后去除原本熔炉中的物品
                 inv.clear(2);
             }
         }

@@ -23,8 +23,6 @@ public class StartSubCommandHandler extends BaseCommandHandler {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        int key = player.hashCode();
-        //
         if (args.length > 1) {
             doHelp(Main.plugin, player, "cmd.markCmd.startCmd.helpMsg");
             return;
@@ -33,6 +31,6 @@ public class StartSubCommandHandler extends BaseCommandHandler {
         MarkData data = new MarkData();
         data.setPlayer(player);
         data.setMarkStartTime(LocalDateTime.now());
-        MarkListener.getMarkModePlayers().put(key, data);
+        MarkListener.getMarkModePlayers().put(player, data);
     }
 }

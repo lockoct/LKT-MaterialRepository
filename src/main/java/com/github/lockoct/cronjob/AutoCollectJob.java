@@ -21,21 +21,20 @@ import java.util.List;
 public class AutoCollectJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
-        // 需要在异步方法中调用Bukkit API，必须在里面多套一层同步
         new BukkitRunnable() {
             @Override
             public void run() {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Dao dao = DatabaseUtil.getDao();
-                        if (dao != null) {
-                            // 获取区域
-                            List<CollectArea> caList = dao.query(CollectArea.class, Cnd.where("enabled", "=", 1).and("deleted", "=", 0));
-                            caList.forEach(e -> {
-                                // 获取区域中的容器
-                                e = dao.fetchLinks(e, "containers");
-                                final CollectArea areaTmp = e;
+                Dao dao = DatabaseUtil.getDao();
+                if (dao != null) {
+                    // 获取区域
+                    List<CollectArea> caList = dao.query(CollectArea.class, Cnd.where("enabled", "=", 1).and("deleted", "=", 0));
+                    caList.forEach(e -> {
+                        // 获取区域中的容器
+                        CollectArea areaTmp = dao.fetchLinks(e, "containers");
+                        // 需要在异步方法中调用Bukkit API，必须在里面多套一层同步
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
                                 e.getContainers().forEach(c -> {
                                     Block areaBlock = new Location(Bukkit.getWorld(areaTmp.getWorld()), c.getX(), c.getY(), c.getZ()).getBlock();
                                     ContainerHandler handler = ContainerHandlerFactory.getHandler(areaBlock.getType());
@@ -43,11 +42,16 @@ public class AutoCollectJob implements Job {
                                         handler.collectItem(areaBlock);
                                     }
                                 });
-                            });
+                            }
+                        }.runTask(Main.plugin);
+                    });
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
                             ColorLogUtil.logSuccess(Main.plugin, I18nUtil.getText(Main.plugin, "pluginMsg.autoCollectComplete"));
                         }
-                    }
-                }.runTask(Main.plugin);
+                    }.runTask(Main.plugin);
+                }
             }
         }.runTaskAsynchronously(Main.plugin);
     }
