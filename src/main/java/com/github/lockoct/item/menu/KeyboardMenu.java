@@ -4,9 +4,11 @@ import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.item.listener.ItemListMenuListener;
 import com.github.lockoct.item.listener.ShulkerBoxPlaceMenuListener;
+import com.github.lockoct.item.listener.UnstackItemListMenuListener;
 import com.github.lockoct.item.task.SendItemTask;
 import com.github.lockoct.menu.BaseMenu;
 import com.github.lockoct.utils.I18nUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Light;
@@ -18,7 +20,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockDataMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class KeyboardMenu extends BaseMenu {
     private final int[] numKeyPos = new int[]{38, 10, 11, 12, 19, 20, 21, 28, 29, 30};
@@ -26,27 +30,30 @@ public class KeyboardMenu extends BaseMenu {
     private int mode = 1;
     private int calcResult = 0;
 
+    public KeyboardMenu(HashMap<String, Object> menuContext, Player player) {
+        this(I18nUtil.getText(Main.plugin, player, "keyboardMenu.title"), menuContext, player);
+    }
+
     public KeyboardMenu(String title, HashMap<String, Object> menuContext, Player player) {
         super(54, title, menuContext, player, Main.plugin);
-        setKeyboard();
-        setModeItem();
-        setOptItem(Material.ARROW, I18nUtil.getCommonText(player, "menu.back"), 48, "back");
-        setOptItem(Material.DARK_OAK_DOOR, I18nUtil.getCommonText(player, "menu.exit"), 50, "exit");
+        setKeyboardBtn();
+        setModeBtn();
+        setSwitchSpecialItemModeBtn();
+        setOptItem(Material.DARK_OAK_DOOR, I18nUtil.getCommonText(player, "menu.exit"), 48, "exit");
+        setOptItem(Material.ARROW, I18nUtil.getCommonText(player, "menu.back"), 50, "back");
         setBackGround(Material.BLUE_STAINED_GLASS_PANE);
     }
 
-    private void setKeyboard() {
+    private void setKeyboardBtn() {
         Player player = getPlayer();
         // 数字键
         for (int i = 0; i < numKeyPos.length; i++) {
-            ItemStack is = setOptItem(Material.LIGHT, "" + i, numKeyPos[i], "" + i);
-            ItemMeta im = is.getItemMeta();
+            ItemMeta im = Bukkit.getItemFactory().getItemMeta(Material.LIGHT);
             assert im != null;
             BlockData data = Material.LIGHT.createBlockData();
             ((Light) data).setLevel(i);
             ((BlockDataMeta) im).setBlockData(data);
-            is.setItemMeta(im);
-            getInventory().setItem(numKeyPos[i], is);
+            setOptItem(Material.LIGHT, im, "" + i, numKeyPos[i], "" + i);
         }
 
         // 计算结果告示牌
@@ -58,7 +65,7 @@ public class KeyboardMenu extends BaseMenu {
         setOptItem(Material.LIME_CONCRETE, I18nUtil.getText(Main.plugin, player, "keyboardMenu.btn.confirm"), 43, "confirm");
     }
 
-    private void setModeItem() {
+    private void setModeBtn() {
         Inventory inv = getInventory();
         Player player = getPlayer();
 
@@ -125,6 +132,32 @@ public class KeyboardMenu extends BaseMenu {
         setCalcResult(getCalcResult());
     }
 
+    // 设置切换特殊物品模式按钮
+    public void setSwitchSpecialItemModeBtn() {
+        Optional<Material> optionalMaterial = Optional.ofNullable(getMenuContext().get("itemInfo"))
+            .map(itemInfo -> (Item) itemInfo)
+            .map(Item::getType)
+            .map(Material::getMaterial);
+
+        if (optionalMaterial.isEmpty()) {
+            return;
+        }
+
+        // 仅在选择物品为不可堆叠物品时起效
+        if (new ItemStack(optionalMaterial.get()).getMaxStackSize() > 1) {
+            return;
+        }
+
+        ItemMeta im = Bukkit.getItemFactory().getItemMeta(Material.NETHER_STAR);
+
+        ArrayList<String> loreList = new ArrayList<>();
+        loreList.add(I18nUtil.getText(Main.plugin, getPlayer(), "keyboardMenu.btn.special.description"));
+        assert im != null;
+        im.setLore(loreList);
+
+        setOptItem(Material.NETHER_STAR, im, I18nUtil.getText(Main.plugin, getPlayer(), "keyboardMenu.btn.special.title"), 49, "special");
+    }
+
     public int getCalcResult() {
         return calcResult;
     }
@@ -164,7 +197,7 @@ public class KeyboardMenu extends BaseMenu {
     }
 
     public void back() {
-        ItemListMenu menu = new ItemListMenu((int) getMenuContext().get("fromPage"), I18nUtil.getText(Main.plugin, getPlayer(), "itemListMenu.title"), getPlayer());
+        ItemListMenu menu = new ItemListMenu((int) getMenuContext().get("fromPage"), getPlayer());
         close();
         menu.open(new ItemListMenuListener(menu));
     }
@@ -177,9 +210,16 @@ public class KeyboardMenu extends BaseMenu {
                 close();
             } else {
                 getMenuContext().put("boxCount", calcResult);
-                ShulkerBoxPlaceMenu menu = new ShulkerBoxPlaceMenu(I18nUtil.getText(Main.plugin, player, "shulkerBoxPlaceMenu.title"), getMenuContext(), player);
+                ShulkerBoxPlaceMenu menu = new ShulkerBoxPlaceMenu(getMenuContext(), player);
+                close();
                 menu.open(new ShulkerBoxPlaceMenuListener(menu));
             }
         }
+    }
+
+    public void toUnstackItemMenu() {
+        UnstackItemListMenu menu = new UnstackItemListMenu(getMenuContext(), getPlayer());
+        close();
+        menu.open(new UnstackItemListMenuListener(menu));
     }
 }

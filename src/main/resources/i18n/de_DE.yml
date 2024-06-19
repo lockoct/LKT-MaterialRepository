@@ -5,6 +5,7 @@ pluginMsg:
   commandNotExecInGame: "Dieser Befehl muss im Spiel ausgeführt werden."
   invalidCornTab: "Ein Problem mit dem cornTab-Ausdruck ist aufgetreten, Standardausdruck wird verwendet: 0 0 4 * * ? *"
   autoCollectComplete: "Alle Sammelaufgaben wurden abgeschlossen."
+  itemLoadError: "Fehler beim Laden des Gegenstands, möglicherweise verwenden Sie Gegenstände oder Gegenstandsfunktionen aus einer höheren Version auf einem Server mit niedrigerer Version. Bitte aktualisieren Sie die Serverversion."
 areaListMenu:
   title: "Bereichsverwaltungsmenü"
   itemInfo: "In diesem Bereich befinden sich insgesamt %s Container."
@@ -20,11 +21,18 @@ areaManageMenu:
     reload: "Container erneut erkennen"
 itemListMenu:
   title: "Menü zur Auswahl von Gegenständen"
-  itemInfo: "%s übrig"
+  itemInfo:
+    remaining: "%s verbleibend"
+    special: ", %s reguläre Gegenstände, %s spezielle Gegenstände"
   pageStatisticsInfo: "Insgesamt %s Arten von Gegenständen"
+  itemLoadErr: "Konnte den Gegenstand nicht laden"
 unstackItemListMenu:
   title: "Gegenstandsabholmenü"
   pageStatisticsInfo: "%s Gegenstände insgesamt"
+  btn:
+    normal:
+      title: "Zu regulären Gegenständen wechseln"
+      description: "Nur reguläre Gegenstände im Stapelabruf abrufen"
 keyboardMenu:
   title: "Mengenauswahl"
   calcResPrefix: "Menge der ausgewählten Gegenstände: "
@@ -40,6 +48,9 @@ keyboardMenu:
     clear: "Leeren"
     delete: "Löschen"
     confirm: "Bestätigen"
+    special:
+      title: "Zu speziellen Gegenständen wechseln"
+      description: "Nur Gegenstände mit speziellen Daten wie Haltbarkeit und Name abrufen"
 shulkerBoxPlaceMenu:
   title: "Bitte platzieren Sie die entsprechende Anzahl von Shulker-Boxen"
   notEmptyBox: "Die Shulker-Box zum Sammeln muss leer sein"
@@ -69,6 +80,7 @@ cmd:
       blastFurnaceCount: " %s Schmelzofen(Schmelzöfen),"
       smokerCount: " %s Räucherofen(Räucheröfen),"
       hopperCount: " %s Trichter,"
+      decoratedPotCount: "%s verzierte Töpfe,"
     identifyContainerFailed: "Containererkennung fehlgeschlagen"
   markCmd:
     helpMsg: [
@@ -108,6 +120,7 @@ cmd:
       blastFurnaceCount: " %s Schmelzofen(Schmelzöfen),"
       smokerCount: " %s Räucherofen(Räucheröfen),"
       hopperCount: " %s Trichter,"
+      decoratedPotCount: "verzierte Töpfe %s,"
       noContainer: "Es gibt keine Container in dem Bereich, der insgesamt aus %s Blöcken besteht."
   itemCmd:
     helpMsg: [

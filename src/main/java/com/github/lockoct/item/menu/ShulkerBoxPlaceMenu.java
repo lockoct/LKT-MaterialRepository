@@ -21,6 +21,10 @@ public class ShulkerBoxPlaceMenu extends BaseMenu {
     private final HashMap<Integer, ShulkerBoxPlaceMenuData> shulkerBoxMap = new HashMap<>();
     private final int emptySlot;
 
+    public ShulkerBoxPlaceMenu(HashMap<String, Object> menuContext, Player player) {
+        this(I18nUtil.getText(Main.plugin, player, "shulkerBoxPlaceMenu.title"), menuContext, player);
+    }
+
     public ShulkerBoxPlaceMenu(String title, HashMap<String, Object> menuContext, Player player) {
         super(54, title, menuContext, player, Main.plugin);
         emptySlot = (int) menuContext.get("boxCount");
@@ -72,7 +76,7 @@ public class ShulkerBoxPlaceMenu extends BaseMenu {
     }
 
     public void back() {
-        KeyboardMenu menu = new KeyboardMenu(I18nUtil.getText(Main.plugin, getPlayer(), "keyboardMenu.title"), getMenuContext(), getPlayer());
+        KeyboardMenu menu = new KeyboardMenu(getMenuContext(), getPlayer());
         close();
         menu.open(new KeyboardMenuListener(menu));
     }

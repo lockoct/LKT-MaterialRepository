@@ -20,13 +20,47 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.HashMap;
 
 public class MarkListener implements Listener {
-    private static HashMap<Integer, MarkData> markModePlayers = new HashMap<>();
+    private static HashMap<Player, MarkData> markModePlayers = new HashMap<>();
+
+    // 清除玩家标记数据
+    public static boolean clearMarkData(Player player) {
+        MarkData data = markModePlayers.get(player);
+        if (data == null) {
+            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.notInMarkMode"));
+            return false;
+        }
+
+        int taskId = data.getCalcTaskId();
+        // 检查是否有还在运行的计算线程，如果有就停止线程
+        if (taskId > 0) {
+            Bukkit.getScheduler().cancelTask(taskId);
+        }
+        markModePlayers.remove(player);
+        return true;
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        clearMarkData(e.getPlayer());
+    }
+
+    @EventHandler
+    public void onKick(PlayerKickEvent e) {
+        clearMarkData(e.getPlayer());
+    }
+
+    public static HashMap<Player, MarkData> getMarkModePlayers() {
+        if (markModePlayers == null) {
+            markModePlayers = new HashMap<>();
+        }
+        return markModePlayers;
+    }
 
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         // 查找进入标记状态玩家
         Player player = e.getPlayer();
-        MarkData data = getMarkModePlayers().get(player.hashCode());
+        MarkData data = getMarkModePlayers().get(player);
         if (data != null) {
             Block block = e.getClickedBlock();
             Action action = e.getAction();
@@ -62,40 +96,5 @@ public class MarkListener implements Listener {
                 }
             }
         }
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        clearMarkData(e.getPlayer());
-    }
-
-    @EventHandler
-    public void onKick(PlayerKickEvent e) {
-        clearMarkData(e.getPlayer());
-    }
-
-    // 清除玩家标记数据
-    public static boolean clearMarkData(Player player) {
-        int key = player.hashCode();
-        MarkData data = markModePlayers.get(key);
-        if (data != null) {
-            int taskId = data.getCalcTaskId();
-            // 检查是否有还在运行的计算线程，如果有就停止线程
-            if (taskId > 0) {
-                Bukkit.getScheduler().cancelTask(taskId);
-            }
-            markModePlayers.remove(key);
-            return true;
-        } else {
-            player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.notInMarkMode"));
-            return false;
-        }
-    }
-
-    public static HashMap<Integer, MarkData> getMarkModePlayers() {
-        if (markModePlayers == null) {
-            markModePlayers = new HashMap<>();
-        }
-        return markModePlayers;
     }
 }

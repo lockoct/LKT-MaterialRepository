@@ -4,12 +4,14 @@ import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.entity.UnstackItem;
 import com.github.lockoct.item.listener.ItemListMenuListener;
+import com.github.lockoct.item.listener.KeyboardMenuListener;
 import com.github.lockoct.item.task.SendUnstackItemTask;
 import com.github.lockoct.menu.PageableMenu;
 import com.github.lockoct.nbtapi.NBT;
 import com.github.lockoct.nbtapi.iface.ReadWriteNBT;
 import com.github.lockoct.utils.DatabaseUtil;
 import com.github.lockoct.utils.I18nUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -28,9 +30,15 @@ public class UnstackItemListMenu extends PageableMenu {
     private List<UnstackItem> items;
     private List<UnstackItem> selectedItems;
 
+
+    public UnstackItemListMenu(HashMap<String, Object> menuContext, Player player) {
+        this(I18nUtil.getText(Main.plugin, player, "unstackItemListMenu.title"), menuContext, player);
+    }
+
     public UnstackItemListMenu(String title, HashMap<String, Object> menuContext, Player player) {
         super(title, menuContext, player, Main.plugin);
         setOptItem(Material.SPECTRAL_ARROW, I18nUtil.getCommonText(player, "menu.back"), 50, "back");
+        setSwitchNormalItemModeBtn();
     }
 
     @Override
@@ -48,6 +56,10 @@ public class UnstackItemListMenu extends PageableMenu {
                     pager.setRecordCount(dao.count(UnstackItem.class, cond));
                     setTotalPage(pager.getPageCount());
                     setTotal(pager.getRecordCount());
+                    // 重置物品选择列表
+                    if (selectedItems != null) {
+                        selectedItems.clear();
+                    }
                     // 设置分页
                     setPageElement();
                     // 填充物品
@@ -87,6 +99,18 @@ public class UnstackItemListMenu extends PageableMenu {
         inv.setItem(49, is);
     }
 
+    // 设置切换普通物品模式按钮
+    private void setSwitchNormalItemModeBtn() {
+        ItemMeta im = Bukkit.getItemFactory().getItemMeta(Material.NETHER_STAR);
+
+        ArrayList<String> loreList = new ArrayList<>();
+        loreList.add(I18nUtil.getText(Main.plugin, getPlayer(), "unstackItemListMenu.btn.normal.description"));
+        assert im != null;
+        im.setLore(loreList);
+
+        setOptItem(Material.NETHER_STAR, im, I18nUtil.getText(Main.plugin, getPlayer(), "unstackItemListMenu.btn.normal.title"), 51, "normal");
+    }
+
     public List<UnstackItem> getItems() {
         return items;
     }
@@ -99,13 +123,23 @@ public class UnstackItemListMenu extends PageableMenu {
     }
 
     public void confirm() {
-        new SendUnstackItemTask(getPlayer(), selectedItems).runTaskAsynchronously(Main.plugin);
-        close();
+        new SendUnstackItemTask(getPlayer(), selectedItems, this).runTaskAsynchronously(Main.plugin);
+        // close();
     }
 
     public void back() {
-        ItemListMenu menu = new ItemListMenu((int) getMenuContext().get("fromPage"), I18nUtil.getText(Main.plugin, getPlayer(), "itemListMenu.title"), getPlayer());
+        ItemListMenu menu = new ItemListMenu((int) getMenuContext().get("fromPage"), getPlayer());
         close();
         menu.open(new ItemListMenuListener(menu));
+    }
+
+    public void toKeyboardMenu() {
+        KeyboardMenu menu = new KeyboardMenu(getMenuContext(), getPlayer());
+        close();
+        menu.open(new KeyboardMenuListener(menu));
+    }
+
+    public void refresh() {
+        setPageContent(1);
     }
 }

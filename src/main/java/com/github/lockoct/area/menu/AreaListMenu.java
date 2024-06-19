@@ -25,8 +25,16 @@ public class AreaListMenu extends PageableMenu {
     private List<CollectArea> areas;
     private final List<Integer> containerCountList = new ArrayList<>();
 
+    public AreaListMenu(Player player) {
+        super(I18nUtil.getText(Main.plugin, player, "areaListMenu.title"), new HashMap<>(), player, Main.plugin);
+    }
+
     public AreaListMenu(String title, Player player) {
         super(title, new HashMap<>(), player, Main.plugin);
+    }
+
+    public AreaListMenu(int currentPage, Player player) {
+        super(currentPage, I18nUtil.getText(Main.plugin, player, "areaListMenu.title"), new HashMap<>(), player, Main.plugin);
     }
 
     public AreaListMenu(int currentPage, String title, Player player) {
@@ -104,7 +112,7 @@ public class AreaListMenu extends PageableMenu {
             // 列表菜单当前页码
             context.put("fromPage", getCurrentPage());
 
-            AreaManageMenu menu = new AreaManageMenu(I18nUtil.getText(Main.plugin, getPlayer(), "areaManageMenu.title"), getMenuContext(), getPlayer());
+            AreaManageMenu menu = new AreaManageMenu(getMenuContext(), getPlayer());
             close();
             menu.open(new AreaManageMenuListener(menu));
         }

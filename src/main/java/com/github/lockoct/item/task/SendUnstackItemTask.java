@@ -3,6 +3,7 @@ package com.github.lockoct.item.task;
 import com.github.lockoct.Main;
 import com.github.lockoct.entity.Item;
 import com.github.lockoct.entity.UnstackItem;
+import com.github.lockoct.item.menu.UnstackItemListMenu;
 import com.github.lockoct.nbtapi.NBT;
 import com.github.lockoct.nbtapi.iface.ReadWriteNBT;
 import com.github.lockoct.utils.DatabaseUtil;
@@ -23,10 +24,12 @@ import java.util.List;
 public class SendUnstackItemTask extends BukkitRunnable {
     private final Player player;
     private final List<UnstackItem> selectedItemList;
+    private final UnstackItemListMenu menu;
 
-    public SendUnstackItemTask(Player player, List<UnstackItem> selectedItemList) {
+    public SendUnstackItemTask(Player player, List<UnstackItem> selectedItemList, UnstackItemListMenu menu) {
         this.player = player;
         this.selectedItemList = selectedItemList;
+        this.menu = menu;
     }
 
     @Override
@@ -54,8 +57,7 @@ public class SendUnstackItemTask extends BukkitRunnable {
 
         // 给玩家背包发放物品
         for (UnstackItem e : selectedItemList) {
-            Cnd cnd = Cnd.where("id", "=", e.getId());
-            int count = dao.count(UnstackItem.class, cnd);
+            int count = dao.count(UnstackItem.class, Cnd.where("id", "=", e.getId()));
             if (count == 0) {
                 getFailItemCount++;
                 continue;
@@ -91,7 +93,14 @@ public class SendUnstackItemTask extends BukkitRunnable {
             }
         }
 
+        // 刷新当前不可堆叠物品菜单
+        menu.refresh();
+
         if (getFailItemCount > 0) {
+            if (selectedItemList.size() == 1) {
+                player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.itemCmd.amountLack"));
+                return;
+            }
             player.sendMessage(ChatColor.YELLOW + I18nUtil.getText(Main.plugin, player, "cmd.itemCmd.amountChanged"));
         }
         player.sendMessage(ChatColor.GREEN + I18nUtil.getText(Main.plugin, player, "cmd.itemCmd.getSuccessful", 0, selectedItemList.size() - getFailItemCount));

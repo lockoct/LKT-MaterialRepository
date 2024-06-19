@@ -22,14 +22,13 @@ public class ClearSubCommandHandler extends BaseCommandHandler {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        int key = player.hashCode();
-        MarkData data = MarkListener.getMarkModePlayers().get(key);
-        if (data != null) {
-            data.setMarkPoint1(null);
-            data.setMarkPoint2(null);
-            player.sendMessage(I18nUtil.getText(Main.plugin, player, "cmd.markCmd.clearCmd.selectionCleared"));
-        } else {
+        MarkData data = MarkListener.getMarkModePlayers().get(player);
+        if (data == null) {
             player.sendMessage(ChatColor.RED + I18nUtil.getText(Main.plugin, player, "cmd.markCmd.clearCmd.selectionCleared"));
+            return;
         }
+        data.setMarkPoint1(null);
+        data.setMarkPoint2(null);
+        player.sendMessage(I18nUtil.getText(Main.plugin, player, "cmd.markCmd.clearCmd.selectionCleared"));
     }
 }

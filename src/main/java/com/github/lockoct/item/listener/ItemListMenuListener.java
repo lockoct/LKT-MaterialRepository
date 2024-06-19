@@ -1,11 +1,16 @@
 package com.github.lockoct.item.listener;
 
+import com.github.lockoct.Main;
 import com.github.lockoct.item.menu.ItemListMenu;
 import com.github.lockoct.menu.BaseMenu;
 import com.github.lockoct.menu.listener.BaseMenuListener;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 public class ItemListMenuListener extends BaseMenuListener {
     public ItemListMenuListener(BaseMenu menu) {
@@ -27,11 +32,25 @@ public class ItemListMenuListener extends BaseMenuListener {
                     case "prePage" -> menu.setCurrentPage(menu.getCurrentPage() - 1);
                     case "pageInfo" -> {
                     }
-                    default -> menu.toNextMenu(e.getRawSlot());
+                    default -> {
+                        if (!checkItemLoadError(is)) {
+                            menu.toNextMenu(e.getRawSlot());
+                        }
+                    }
                 }
             }
             return true;
         }
         return false;
+    }
+
+    private boolean checkItemLoadError(ItemStack is) {
+        ItemMeta im = is.getItemMeta();
+        assert im != null;
+
+        NamespacedKey namespacedKey = new NamespacedKey(Main.plugin, "loadErr");
+        PersistentDataContainer pdc = im.getPersistentDataContainer();
+        Integer res = pdc.get(namespacedKey, PersistentDataType.INTEGER);
+        return res != null;
     }
 }

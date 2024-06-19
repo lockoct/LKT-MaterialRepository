@@ -5,6 +5,7 @@ pluginMsg:
   commandNotExecInGame: "This command must be executed in the game."
   invalidCornTab: "cornTab expression has some problems, use default expression: 0 0 4 * * ? *"
   autoCollectComplete: "All collection tasks have been completed."
+  itemLoadError: "Item loading error, you may be using items or item features from a higher version in a lower version server. Please update the server version."
 areaListMenu:
   title: "Area Management Menu"
   itemInfo: "%s containers in the area"
@@ -20,11 +21,18 @@ areaManageMenu:
     reload: "Reload container recognition in Area"
 itemListMenu:
   title: "Item Selection Menu"
-  itemInfo: "%s remaining"
+  itemInfo:
+    remaining: "%s remaining"
+    special: ", %s regular items, %s special items"
   pageStatisticsInfo: "Total %s item types"
+  itemLoadErr: "Unable to load the item"
 unstackItemListMenu:
   title: "Item Pickup Menu"
   pageStatisticsInfo: "Total %s items"
+  btn:
+    normal:
+      title: "Switch to retrieve regular items"
+      description: "Batch retrieve only items in a regular state"
 keyboardMenu:
   title: "Quantity Selection"
   calcResPrefix: "Number of items to take: "
@@ -40,6 +48,9 @@ keyboardMenu:
     clear: "Clear"
     delete: "Delete"
     confirm: "Confirm"
+    special:
+      title: "Switch to retrieve special items"
+      description: "Retrieve only items with special data such as durability and name"
 shulkerBoxPlaceMenu:
   title: "Please place the corresponding number of shulker boxes"
   notEmptyBox: "The shulker box used for picking up items must be empty."
@@ -69,6 +80,7 @@ cmd:
       blastFurnaceCount: " %s blast furnace(s),"
       smokerCount: " %s smoker(s),"
       hopperCount: " %s hopper(s),"
+      decoratedPotCount: "%s decorated pot(s),"
     identifyContainerFailed: "Failed to re-identify container for collection area"
   markCmd:
     helpMsg: [
@@ -108,6 +120,7 @@ cmd:
       blastFurnaceCount: " %s blast furnace(s),"
       smokerCount: " %s smoker(s),"
       hopperCount: " %s hopper(s),"
+      decoratedPotCount: " %s decorated pot(s),"
       noContainer: "Total block size of this area is %s, and no container is detected."
   itemCmd:
     helpMsg: [
