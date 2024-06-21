@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
+import org.nutz.dao.util.cri.Static;
 
 import java.util.ArrayList;
 
@@ -83,7 +84,12 @@ public class SendItemTask extends BukkitRunnable {
 
         // 在update语句中直接对库存做自减
         // 条件为当前库存数量必须大于拿取数量，用于避免并发操作时库存出现负数
-        int res = dao.update(Item.class, Chain.makeSpecial("amount", "-" + amount), Cnd.where("amount", ">=", amount).and("id", "=", item.getId()));
+        int res = dao.update(
+            Item.class,
+            Chain.makeSpecial("amount", "-" + amount),
+            Cnd.where("id", "=", item.getId())
+                .and(new Static("amount - (select count(*) from mr_unstack_item where item_id = '" + item.getId() + "') > " + amount))
+        );
         if (res > 0) {
             // 给玩家背包发放物品
             ItemStack sendItem;
