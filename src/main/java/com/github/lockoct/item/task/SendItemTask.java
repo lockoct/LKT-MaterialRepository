@@ -88,7 +88,7 @@ public class SendItemTask extends BukkitRunnable {
             Item.class,
             Chain.makeSpecial("amount", "-" + amount),
             Cnd.where("id", "=", item.getId())
-                .and(new Static("amount - (select count(*) from mr_unstack_item where item_id = '" + item.getId() + "') > " + amount))
+                .and(new Static("amount - (select count(*) from mr_unstack_item where item_id = '" + item.getId() + "') >= " + amount))
         );
         if (res > 0) {
             // 给玩家背包发放物品
