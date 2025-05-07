@@ -78,11 +78,19 @@ public class ItemListMenu extends PageableMenu {
                             if (StringUtils.isNotBlank(tmp.getNbtMd5())) {
                                 ReadWriteNBT nbt = NBT.parseNBT(tmp.getNbt());
                                 is = NBT.itemStackFromNBT(nbt);
-                                assert is != null;
+                                if (is == null) {
+                                    inv.setItem(i, setLoadErrorItem());
+                                    hasItemLoadError = true;
+                                    continue;
+                                }
                                 is.setAmount(1);
                             } else {
                                 Material m = Material.getMaterial(tmp.getType());
-                                assert m != null;
+                                if (m == null) {
+                                    inv.setItem(i, setLoadErrorItem());
+                                    hasItemLoadError = true;
+                                    continue;
+                                }
                                 is = new ItemStack(m);
                             }
                             im = is.getItemMeta();
